@@ -35,14 +35,14 @@
                 type="text"
                 id="fname"
                 name="usersName"
-                placeholder="Enter Name"
+                placeholder="Enter your Fullname"
                 required
               />
               <input
                 type="text"
                 id="lname"
                 name="usersUid"
-                placeholder="Last Name"
+                placeholder="Enter Username"
                 required
               />
               <input

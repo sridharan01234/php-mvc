@@ -23,7 +23,6 @@ class User
             return false;
         }
     }
-
     public function register($data)
     {
         $this->db->query('INSERT INTO users (usersName, usersEmail, usersUid, usersPwd)

@@ -13,12 +13,11 @@ class Users
 
     public function register()
     {
-
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
         $data = [
-            'usersEmail' => trim($_POST['usersEmail']),
-            'usersUid' => trim($_POST['usersUid']),
-            'usersPwd' => trim($_POST['usersPwd']),
+            'usersName' => $_POST['usersName'],
+            'usersEmail' => $_POST['usersEmail'],
+            'usersUid' => $_POST['usersUid'],
+            'usersPwd' => $_POST['usersPwd'],
         ];
 
         if ($this->userModel->findUserByEmailOrUsername($data['usersEmail'])) {
@@ -61,11 +60,20 @@ class Users
         }
     }
 
+    public function home() {
+        header("location: ../Views/");
+        exit;
+    }
+
     public function createUserSession($user)
     {
         $_SESSION['usersId'] = $user->usersUid;
         $_SESSION['usersEmail'] = $user->usersEmail;
-        header("location: ../Views/dashboard.php");
+        $_SESSION['profile_path'] = $user->profile_picture;
+        $_SESSION['address_line1'] = $user->address_line1;
+        $_SESSION['mobile_number'] = $user->mobile_number;
+        $_SESSION['email'] = $user->email;
+        header("location: ../Views/");
         exit;
     }
 
@@ -100,6 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'logout':
             $init->logout();
             break;
+        case 'home':
+            $init->home();
         default:
             header("location: ../index.php");
             exit;
