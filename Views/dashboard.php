@@ -1,5 +1,5 @@
 <?php
-require_once("session-helper/session-helper.php");
+require_once("../session-helper/session-helper.php");
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +9,7 @@ require_once("session-helper/session-helper.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Settings</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
 </head>
 
@@ -22,7 +22,7 @@ require_once("session-helper/session-helper.php");
         <img src="<?php echo $profile_picture_path; ?>" alt="Profile Picture">
         </div>
         <div>
-        <form action="./controllers/Users.php" method="GET">
+        <form action="../controllers/Users.php" method="GET">
         <input type="hidden" name="q" value="logout">
         <button type="submit" class="logout-btn"><span class="text">Logout</span><span>Thanks!</span></button>
         </form>
@@ -38,7 +38,7 @@ require_once("session-helper/session-helper.php");
                         <h4 class="text-right">Profile Settings</h4>
                     </div>
 
-                    <form method="post" action="controllers/profile-entry.php" enctype="multipart/form-data">
+                    <form method="post" action="../controllers/profile-entry.php" enctype="multipart/form-data">
                         <input type="hidden" name="username" value="">
                         <div class="row mt-2">
                             <div class="row mt-2">

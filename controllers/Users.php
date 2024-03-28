@@ -29,7 +29,7 @@ class Users
         $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
 
         if ($this->userModel->register($data)) {
-            header("../dashboard.php");
+            header("../Views/dashboard.php");
             exit;
         }
     }
@@ -65,7 +65,7 @@ class Users
     {
         $_SESSION['usersId'] = $user->usersUid;
         $_SESSION['usersEmail'] = $user->usersEmail;
-        header("location: ../dashboard.php");
+        header("location: ../Views/dashboard.php");
         exit;
     }
 

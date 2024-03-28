@@ -9,23 +9,24 @@ class ProfileEntry {
     public function profile_entry()
     {
 
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+        //$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
         $data = [
-            'first_name' => trim($_POST['first_name']),
-            'last_name' => trim($_POST['last_name']),
-            'mobile_number' => trim($_POST['mobile_number']),
-            'address_line1' => trim($_POST['address_line1']),
+            'first_name' => $_POST['first_name'],
+            'last_name' => $_POST['last_name'],
+            'mobile_number' => $_POST['mobile_number'],
+            'address_line1' => $_POST['address_line1'],
             'postcode' => trim($_POST['postcode']),
-            'state' => trim($_POST['state']),
-            'email' => trim($_POST['email']),
-            'education' => trim($_POST['education']),
-            'country' => trim($_POST['country']),
-            'state_region' => trim($_POST['state_region']),
+            'state' => $_POST['state'],
+            'email' => $_POST['email'],
+            'education' => $_POST['education'],
+            'country' => $_POST['country'],
+            'state_region' => $_POST['state_region'],
         ];
         
         
         if ($this->id->enterDetails($data)) {
-            header("location: ../dashboard.php");
+            $_SESSION['firstname'] = $_POST['first_name'];
+            header("location: ../Views/dashboard.php");
             exit;
         }
         else {
