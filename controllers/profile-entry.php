@@ -37,6 +37,7 @@ class ProfileEntry
         ];
 
         if ($this->id->enterDetails($data)) {
+            //echo $data['profile_path'];
             $_SESSION['profile_path'] = $target_file;
             header("location: ../Views/dashboard.php");
             exit;
