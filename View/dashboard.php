@@ -1,4 +1,4 @@
-<?php require_once "../session-helper/session-helper.php";
+<?php require_once "../SessionHelper/SessionHelper.php";
 
 if(!isset($_SESSION['usersId'])) {
   header('location: ../index.php');
@@ -26,16 +26,19 @@ if(!isset($_SESSION['usersId'])) {
         </h1>
       </div>
       <div>
-        <img src="<?php echo $_SESSION['profile_path'] ?>" alt="Profile Picture" />
+        <img
+          src="<?php echo $_SESSION['profile_path'] ?>"
+          alt="Profile Picture"
+        />
       </div>
       <div>
-        <form action="../controllers/Users.php" method="GET">
+        <form action="../Controller/Users.php" method="GET">
           <input type="hidden" name="q" value="logout" />
           <button type="submit" class="logout-btn">
             <span class="text">Logout</span><span>Thanks!</span>
           </button>
         </form>
-        <form action="../controllers/Users.php" method="GET">
+        <form action="../Controller/Users.php" method="GET">
           <input type="hidden" name="q" value="home" />
           <button type="submit" class="logout-btn">
             <span class="text">Go to Home</span><span>Thanks!</span>
@@ -54,7 +57,7 @@ if(!isset($_SESSION['usersId'])) {
 
             <form
               method="post"
-              action="../controllers/profile-entry.php"
+              action="../Controller/ProfileEntry.php"
               enctype="multipart/form-data"
             >
               <input type="hidden" name="username" value="" />
@@ -129,17 +132,6 @@ if(!isset($_SESSION['usersId'])) {
                     type="text"
                     class="form-control"
                     placeholder="State"
-                  />
-                </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col-md-12">
-                  <label class="labels">Email</label>
-                  <input
-                    name="email"
-                    type="email"
-                    class="form-control"
-                    placeholder="Email"
                   />
                 </div>
               </div>

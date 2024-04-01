@@ -1,7 +1,6 @@
 const toggleForm = () => {
-  const container = document.querySelector('.container');
-  container.classList.toggle('active');
-
+  const container = document.querySelector(".container");
+  container.classList.toggle("active");
 };
 
 var password = "";
@@ -28,39 +27,36 @@ function ValidatePassword() {
     return specialCharacterRegex.test(input);
   }
 
-  $("#Length").removeClass(password.length > 6 ? "glyphicon-remove" : "glyphicon-ok");
-  $("#Length").addClass(password.length > 6 ? "glyphicon-ok" : "glyphicon-remove");
+  $("#Length").removeClass(
+    password.length > 6 ? "glyphicon-remove" : "glyphicon-ok"
+  );
+  $("#Length").addClass(
+    password.length > 6 ? "glyphicon-ok" : "glyphicon-remove"
+  );
   if (containsLowercase(password)) {
     document.getElementById("LowerCase").style.color = "green";
-  }
-  else {
+  } else {
     document.getElementById("LowerCase").style.color = "red";
   }
   if (containsNumeric(password)) {
     document.getElementById("Numbers").style.color = "green";
-  }
-  else {
+  } else {
     document.getElementById("Numbers").style.color = "red";
-
   }
   if (containsUppercase(password)) {
     document.getElementById("UpperCase").style.color = "green";
-  }
-  else {
+  } else {
     document.getElementById("UpperCase").style.color = "red";
-
   }
   if (containsSpecialCharacter(password)) {
     document.getElementById("Symbols").style.color = "green";
-  }
-  else {
+  } else {
     document.getElementById("Symbols").style.color = "red";
   }
 }
 
 $(document).ready(function () {
-  $("#NewPassword").on('keyup', ValidatePassword);
-
+  $("#NewPassword").on("keyup", ValidatePassword);
 });
 var confirmPasswordField = document.getElementById("ConfirmPassword");
 
@@ -69,11 +65,11 @@ confirmPasswordField.addEventListener("input", function () {
   if (password === confirmPasswordField.value) {
     document.getElementById("Match").style.color = "green";
     document.getElementById("Match").innerHTML = "Password Matched";
-    document.getElementById("SignUp-btn").style.cursor = "pointer"
+    document.getElementById("SignUp-btn").style.cursor = "pointer";
   } else {
     document.getElementById("Match").style.color = "red";
     document.getElementById("Match").innerHTML = "Password Does Not Match";
-    document.getElementById("SignUp-btn").style.cursor = "not-allowed"
+    document.getElementById("SignUp-btn").style.cursor = "not-allowed";
   }
 });
 
@@ -82,14 +78,19 @@ document.getElementById("Email").addEventListener("input", function () {
   var email = document.getElementById("Email").value;
   var booking_email = email.toString();
   console.log(booking_email);
-  if (booking_email == '' || booking_email.indexOf('@') == -1 || booking_email.indexOf('.') == -1) {
-
+  if (
+    booking_email == "" ||
+    booking_email.indexOf("@") == -1 ||
+    booking_email.indexOf(".") == -1
+  ) {
     document.getElementById("Valid-Email").style.color = "Red";
     document.getElementById("Valid-Email").innerHTML = "InValid Email";
-  }
-  else {
+  } else {
     document.getElementById("Valid-Email").style.color = "green";
     document.getElementById("Valid-Email").innerHTML = "Valid Email";
-
   }
-}) 
+});
+
+function profileEntry() {
+  document.getElementById('entry-form').style.display = "block";
+}

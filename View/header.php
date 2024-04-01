@@ -1,4 +1,4 @@
-<?php require_once("../session-helper/session-helper.php");
+<?php require_once("../SessionHelper/SessionHelper.php");
 if(!isset($_SESSION['usersId'])) {
   header('location: ../index.php');
 }
@@ -93,7 +93,7 @@ if(!isset($_SESSION['usersId'])) {
           <div class="dropdown">
             <a
               class="dropdown-toggle d-flex align-items-center hidden-arrow"
-              href="dashboard.php"
+              href="ProfileDetails.php"
               id="navbarDropdownMenuAvatar"
               role="button"
               data-mdb-toggle="dropdown"
@@ -124,7 +124,7 @@ if(!isset($_SESSION['usersId'])) {
             </ul>
 
           </div>
-          <form action="../controllers/Users.php" method="GET">
+          <form action="../Controller/Users.php" method="GET">
               <input type="hidden" name="q" value="logout" />
               <button type="submit" class="logout-btn">
                 <span class="text">Logout</span><span>Thanks!</span>

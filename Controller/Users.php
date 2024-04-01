@@ -1,6 +1,6 @@
 <?php
-require_once '../session-helper/session-helper.php';
-require_once '../models/User.php';
+require_once("../SessionHelper/SessionHelper.php");
+require_once '../Model/User.php';
 
 class Users
 {
@@ -28,7 +28,7 @@ class Users
         $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
 
         if ($this->userModel->register($data)) {
-            header("../Views/dashboard.php");
+            header("../View/dashboard.php");
             exit;
         }
     }
@@ -61,7 +61,7 @@ class Users
     }
 
     public function home() {
-        header("location: ../Views/");
+        header("location: ../View/");
         exit;
     }
 
@@ -69,11 +69,18 @@ class Users
     {
         $_SESSION['usersId'] = $user->usersUid;
         $_SESSION['usersEmail'] = $user->usersEmail;
-        $_SESSION['profile_path'] = $user->profile_picture;
+        $_SESSION['profile_path'] = "../assets/".$user->profile_picture;
         $_SESSION['address_line1'] = $user->address_line1;
         $_SESSION['mobile_number'] = $user->mobile_number;
-        $_SESSION['email'] = $user->email;
-        header("location: ../Views/");
+        $_SESSION['postcode'] = $user->postcode;
+        $_SESSION['state'] = $user->state;
+        $_SESSION['country'] = $user->country;
+        $_SESSION['first_name'] = $user->first_name;
+        $_SESSION['last_name'] = $user->last_name;
+        $_SESSION['full_name'] = $user->first_name.$user->last_name;
+        $_SESSION['education'] = $user->education;
+        $_SESSION['state/region'] = $user->state_region;
+        header("location: ../View/");
         exit;
     }
 

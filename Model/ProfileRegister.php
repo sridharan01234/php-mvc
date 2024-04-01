@@ -1,7 +1,7 @@
 <?php
 require_once '../libraries/Database.php';
 
-class profileRegister
+class ProfileRegister
 {
 
     private $db;
