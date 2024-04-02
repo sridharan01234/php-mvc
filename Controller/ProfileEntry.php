@@ -12,9 +12,10 @@ class ProfileEntry
     public function profileEntry()
     {
         $file_name = "";
+
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
             $file_extension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
-            $file_name = $_SESSION['usersEmail'] . "." . $file_extension;
+            $file_name = $_SESSION['email'] . "." . $file_extension;
             $target_file = "../assets/".$file_name;
             if(!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                 echo"File is not uploaded";
@@ -29,12 +30,11 @@ class ProfileEntry
             'last_name' => $_POST['last_name'],
             'mobile_number' => $_POST['mobile_number'],
             'address_line1' => $_POST['address_line1'],
-            'email' => $_SESSION['usersEmail'],
+            'email' => $_SESSION['email'],
             'postcode' => $_POST['postcode'],
             'state' => $_POST['state'],
             'education' => $_POST['education'],
             'country' => $_POST['country'],
-            'state_region' => $_POST['state_region'],
             'profile_path' => $file_name,
         ];
 
@@ -42,7 +42,7 @@ class ProfileEntry
             $_SESSION['profile_path'] = "../assets/".$user['profile_path'];
             $_SESSION['address_line1'] = $user['address_line1'];
             $_SESSION['mobile_number'] = $user['mobile_number'];
-            $_SESSION['postcode'] = $user['mobile_number'];
+            $_SESSION['postcode'] = $user['postcode'];
             $_SESSION['state'] = $user['state'];
             $_SESSION['country'] = $user['country'];
             $_SESSION['first_name'] = $user['first_name'];

@@ -32,7 +32,7 @@
               <input
                 type="email"
                 id="Email"
-                name="usersEmail"
+                name="email"
                 placeholder="Email Address"
               />
               <p id="Valid-Email" class="glyphicon glyphicon-remove">

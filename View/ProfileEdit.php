@@ -1,7 +1,6 @@
 <?php require_once "../SessionHelper/SessionHelper.php";
-
-if(!isset($_SESSION['usersId'])) {
-  header('location: ../index.php');
+if (!isset($_SESSION['usersId'])) {
+    header('location: ../index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -14,40 +13,51 @@ if(!isset($_SESSION['usersId'])) {
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="../style/style.min.css">
+    <link rel="stylesheet" href="../style/style.min.css" />
   </head>
   <body>
-    <div class="container">
-      <div class="main-body">
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex flex-column align-items-center text-center">
-                  <img
-                    src="<?php echo $_SESSION['profile_path'] ?>"
-                    alt="Profile Picture"
-                  />
-                  <div class="mt-3">
-                    <h4><?php echo $_SESSION['usersId'] ?></h4>
-                    <p class="text-secondary mb-1">Full Stack Developer</p>
-                    <p class="text-muted font-size-sm">
-                      <?php echo $_SESSION['address_line1'] ?>
-                    </p>
+    <form
+      method="post"
+      action="../Controller/ProfileEntry.php"
+      enctype="multipart/form-data"
+    >
+      <div class="container">
+        <div class="main-body">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div
+                    class="d-flex flex-column align-items-center text-center"
+                  >
+                    <div class="avatar-wrapper">
+                      <img
+                        class="profile-pic"
+                        src="<?php echo $_SESSION['profile_path'] ?>"
+                      />
+                      <div class="upload-button">
+                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <h4><?php echo $_SESSION['usersId'] ?></h4>
+                      <p class="text-secondary mb-1">Impact Trainee</p>
+                      <p class="text-muted font-size-sm">
+                        <?php echo $_SESSION['address_line1'] ?>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-              <button class="button-23" role="button"><a href="index.php">Go to home</a></button>
             </div>
-          </div>
-          <div class="col-lg-8">
-            <div class="card">
-              <form
-                method="post"
-                action="../Controller/ProfileEntry.php"
-                enctype="multipart/form-data"
-              >
-              <div class="row mt-2">
+            <div class="col-lg-8">
+              <div class="card">
+                <div class="row mt-2">
+                  <div class="col-md-12">
+                  </div>
+                </div>
+                <div class="card-body">
+                <div class="row mt-2">
                   <div class="col-md-12">
                     <label class="labels">Profile Picture</label>
                     <input type="hidden" name="username" value="" />
@@ -58,7 +68,6 @@ if(!isset($_SESSION['usersId'])) {
                     />
                   </div>
                 </div>
-                <div class="card-body">
                   <div class="row mb-3">
                     <div class="col-sm-3">
                       <h6 class="mb-0">First Name</h6>
@@ -93,8 +102,9 @@ if(!isset($_SESSION['usersId'])) {
                       <input
                         type="text"
                         class="form-control"
-                        value="<?php echo $_SESSION['usersEmail'] ?>"
-                        disabled/>
+                        value="<?php echo $_SESSION['email'] ?>"
+                        disabled
+                      />
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -139,6 +149,19 @@ if(!isset($_SESSION['usersId'])) {
                   </div>
                   <div class="row mb-3">
                     <div class="col-sm-3">
+                      <h6 class="mb-0">Country</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="country"
+                        value="<?php echo $_SESSION['country'] ?>"
+                      />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
                       <h6 class="mb-0">State</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
@@ -163,48 +186,19 @@ if(!isset($_SESSION['usersId'])) {
                       />
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Country</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="country"
-                        value="<?php echo $_SESSION['country'] ?>"
-                      />
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">State/Region</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="state_region"
-                        value=""
-                      />
-                    </div>
-                  </div>
                   <div class="row">
                     <div class="col-sm-3"></div>
                     <div class="col-sm-9 text-secondary">
-                    <button class="button-82-pushable" role="button">
-                  <span class="button-82-shadow"></span>
-                  <span class="button-82-edge"></span>
-                  <span class="button-82-front text"> Save Profile </span>
-                </button>
+                      <button type="submit">Save Profile</button>
+                      <a href="ProfileDetails.php"><button>Discard</button></a>
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </body>
 </html>

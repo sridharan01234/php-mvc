@@ -1,4 +1,3 @@
-
 <footer class="text-center text-lg-start bg-light text-muted">
 
   <section class="">
@@ -53,12 +52,16 @@
 
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
           <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-          <p><i class="fas fa-home me-3"></i> <?php echo $_SESSION['address_line1'];?></p>
+          <p><i class="fas fa-home me-3"></i>
+            <?php echo $_SESSION['address_line1'];?>
+          </p>
           <p>
             <i class="fas fa-envelope me-3"></i>
+            <?php echo $_SESSION['email'];?>
+          </p>
+          <p><i class="fas fa-phone me-3"></i>
             <?php echo $_SESSION['mobile_number'];?>
           </p>
-          <p><i class="fas fa-phone me-3"></i> <?php echo $_SESSION['email'];?></p>
         </div>
       </div>
     </div>
@@ -69,5 +72,7 @@
     <a class="text-reset fw-bold" href="https://www.linkedin.com/in/sri-dharan-51370a1b8/">Sridharan</a>
   </div>
 </footer>
+
+<script src="../js/script.js"></script>
 </body>
 </html>

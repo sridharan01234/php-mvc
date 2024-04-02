@@ -1,5 +1,5 @@
 <?php
-require_once("../SessionHelper/SessionHelper.php");
+require_once "../SessionHelper/SessionHelper.php";
 require_once '../Model/User.php';
 
 class Users
@@ -15,12 +15,13 @@ class Users
     {
         $data = [
             'usersName' => $_POST['usersName'],
-            'usersEmail' => $_POST['usersEmail'],
+            'email' => $_POST['email'],
             'usersUid' => $_POST['usersUid'],
             'usersPwd' => $_POST['usersPwd'],
+            'role' => 'user',
         ];
 
-        if ($this->userModel->findUserByEmailOrUsername($data['usersEmail'])) {
+        if ($this->userModel->findUserByEmail($data['email'])) {
             header("location: ../index.php");
             exit;
         }
@@ -28,17 +29,16 @@ class Users
         $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
 
         if ($this->userModel->register($data)) {
-            header("../View/dashboard.php");
+            header("../index.php");
             exit;
         }
     }
 
     public function login()
     {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
         $data = [
-            'name/email' => trim($_POST['name/email']),
-            'usersPwd' => trim($_POST['usersPwd']),
+            'name/email' => $_POST['name/email'],
+            'usersPwd' => $_POST['usersPwd'],
         ];
 
         if (empty($data['name/email']) || empty($data['usersPwd'])) {
@@ -46,10 +46,19 @@ class Users
             exit();
         }
 
-        if ($this->userModel->findUserByEmailOrUsername($data['name/email'])) {
+        if ($this->userModel->findUserByEmail($data['name/email'])) {
             $loggedInUser = $this->userModel->login($data['name/email'], $data['usersPwd']);
             if ($loggedInUser) {
-                $this->createUserSession($loggedInUser);
+
+                if ($loggedInUser->role == 'admin') {
+                    $this->createUserSession($loggedInUser);
+                    header("location: ../View/admin.php");
+                    exit;
+                } else {
+                    $this->createUserSession($loggedInUser);
+                    header("location: ../View/");
+                    exit;
+                }
             } else {
                 header("location: ../index.php");
                 exit;
@@ -60,16 +69,18 @@ class Users
         }
     }
 
-    public function home() {
+    public function home()
+    {
         header("location: ../View/");
         exit;
     }
 
     public function createUserSession($user)
     {
+        $_SESSION['role'] = $user->role;
         $_SESSION['usersId'] = $user->usersUid;
-        $_SESSION['usersEmail'] = $user->usersEmail;
-        $_SESSION['profile_path'] = "../assets/".$user->profile_picture;
+        $_SESSION['email'] = $user->email;
+        $_SESSION['profile_path'] = "../assets/" . $user->profile_picture;
         $_SESSION['address_line1'] = $user->address_line1;
         $_SESSION['mobile_number'] = $user->mobile_number;
         $_SESSION['postcode'] = $user->postcode;
@@ -77,18 +88,15 @@ class Users
         $_SESSION['country'] = $user->country;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
-        $_SESSION['full_name'] = $user->first_name.$user->last_name;
+        $_SESSION['full_name'] = $user->first_name . $user->last_name;
         $_SESSION['education'] = $user->education;
-        $_SESSION['state/region'] = $user->state_region;
-        header("location: ../View/");
-        exit;
     }
 
     public function logout()
     {
         unset($_SESSION['usersId']);
         unset($_SESSION['usersName']);
-        unset($_SESSION['usersEmail']);
+        unset($_SESSION['email']);
         session_destroy();
         header("location: ../index.php");
         exit;
