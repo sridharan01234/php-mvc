@@ -18,7 +18,7 @@ if (!isset($_SESSION['usersId'])) {
   <body>
     <form
       method="post"
-      action="../Controller/ProfileEntry.php"
+      action="../Controller/ProfileEntryController.php"
       enctype="multipart/form-data"
     >
       <div class="container">

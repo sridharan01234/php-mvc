@@ -1,5 +1,5 @@
 <?php require_once "../SessionHelper/SessionHelper.php";
-require_once "../Controller/Admin.php";
+require_once "../Controller/AdminController.php";
 
 if ($_SESSION['role'] === "user") {
     header('location: ../index.php');
@@ -69,7 +69,7 @@ if ($_SESSION['role'] === "user") {
                         <?php echo $email['email'] ?>
                       </td>
                       <td style="width: 20%">
-                        <form action="../Controller/Admin.php" method="post">
+                        <form action="../Controller/AdminController.php" method="post">
                           <input type="hidden" name="type" value="modify" />
                           <input
                             type="hidden"
@@ -98,7 +98,7 @@ if ($_SESSION['role'] === "user") {
                             </span>
                           </button>
                         </form>
-                        <form action="../Controller/Admin.php" method="post">
+                        <form action="../Controller/AdminController.php" method="post">
                           <input type="hidden" name="type" value="delete" />
                           <input
                             type="hidden"
@@ -136,7 +136,7 @@ if ($_SESSION['role'] === "user") {
     <div class="container">
       <div class="row">
         <div class="col-auto">
-          <form action="../Controller/Admin.php" method="post">
+          <form action="../Controller/AdminController.php" method="post">
             <input type="hidden" name="type" value="print" />
             <button type="submit">List Users</button>
           </form>

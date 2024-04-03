@@ -12,7 +12,7 @@
       <div class="container">
         <div class="user signinBx">
           <div class="formBx">
-            <form method="post" action="./Controller/Users.php">
+            <form method="post" action="./Controller/UserController.php">
               <input type="hidden" name="type" value="register" />
               <h2>Create an account</h2>
               <input

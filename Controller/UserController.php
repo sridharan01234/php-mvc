@@ -1,14 +1,14 @@
 <?php
 require_once "../SessionHelper/SessionHelper.php";
-require_once '../Model/User.php';
+require_once '../Model/UserModel.php';
 
-class Users
+class UserController
 {
 
     private $userModel;
     public function __construct()
     {
-        $this->userModel = new User;
+        $this->userModel = new UserModel;
     }
 
     public function register()
@@ -114,7 +114,7 @@ class Users
     }
 }
 
-$init = new Users;
+$init = new UserController();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST['type']) {

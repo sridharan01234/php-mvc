@@ -1,11 +1,11 @@
 <?php
 require_once("../SessionHelper/SessionHelper.php");
-require_once '../Model/User.php';
+require_once '../Model/UserModel.php';
 
-class Admin {
+class AdminController {
     private $adminModel;
      public function __construct() {
-        $this->adminModel = new User();
+        $this->adminModel = new UserModel();
     }
 
     public function delete() { 
@@ -33,7 +33,7 @@ class Admin {
     }
 }
 
-$init = new Admin();
+$init = new AdminController();
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

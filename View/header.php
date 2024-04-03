@@ -120,7 +120,7 @@ if (!isset($_SESSION['usersId'])) {
               />
             </a>
           </div>
-          <form action="../Controller/Users.php" method="GET">
+          <form action="../Controller/UserController.php" method="GET">
             <input type="hidden" name="q" value="logout" />
             <button type="submit" class="logout-btn">
               <span class="text">Logout</span><span>Thanks!</span>

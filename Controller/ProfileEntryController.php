@@ -1,13 +1,13 @@
 <?php
 require_once("../SessionHelper/SessionHelper.php");
-require_once '../Model/User.php';
-class ProfileEntry
+require_once '../Model/UserModel.php';
+class ProfileEntryController
 {
     private $userModel;
 
     public function __construct()
     {
-        $this->userModel = new User();
+        $this->userModel = new UserModel();
     }
     public function profileEntry()
     {
@@ -59,7 +59,7 @@ class ProfileEntry
 
 }
 
-$init = new ProfileEntry;
+$init = new ProfileEntryController();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $init->profileEntry();
