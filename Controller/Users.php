@@ -30,7 +30,7 @@ class Users
         $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
 
         if ($this->userModel->register($data)) {
-            header("location: ../View/admin.php");
+            header("location: ../View/");
             exit;
         }
     }
@@ -52,13 +52,13 @@ class Users
             if ($loggedInUser) {
 
                 if ($loggedInUser->role == 'admin') {
+                    $_SESSION['details'] = [];
                     $this->createUserSession($loggedInUser);
                     header("location: ../View/admin.php");
                     exit;
                 } else {
                     if ($loggedInUser->status == 0) { 
                         echo"You are blocked please Contact you Administrator";
-                        header("location: ../index.php");
                         exit;
                     }
                     $this->createUserSession($loggedInUser);
@@ -90,7 +90,7 @@ class Users
             $_SESSION['profile_path'] = "../assets/default.jpg"; 
         }
         else {
-            $_SESSION['profile_path'] = "../assets/" . $user->profile_picture;
+            $_SESSION['profile_path'] = "../assets/". $user->profile_picture;
         }
         $_SESSION['address_line1'] = $user->address_line1;
         $_SESSION['mobile_number'] = $user->mobile_number;
