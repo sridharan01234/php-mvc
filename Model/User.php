@@ -25,13 +25,14 @@ class User
     }
     public function register($data)
     {
-        $this->db->query('INSERT INTO users (usersName, email, usersUid, usersPwd, role)
-        VALUES (:name, :email, :Uid, :password, :role)');
+        $this->db->query('INSERT INTO users (usersName, email, usersUid, usersPwd, role, status)
+        VALUES (:name, :email, :Uid, :password, :role, :status)');
         $this->db->bind(':name', $data['usersName']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':Uid', $data['usersUid']);
         $this->db->bind(':password', $data['usersPwd']);
         $this->db->bind(':role', $data['role']);
+        $this->db->bind(':status', $data['status']);
 
         if ($this->db->execute()) {
             return true;
