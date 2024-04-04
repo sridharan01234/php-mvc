@@ -1,14 +1,14 @@
 <?php
 require_once "../SessionHelper/SessionHelper.php";
-require_once '../Model/User.php';
+require_once '../Model/UserModel.php';
 
-class Users
+class UserController
 {
 
     private $userModel;
     public function __construct()
     {
-        $this->userModel = new User;
+        $this->userModel = new UserModel;
     }
 
     public function register()
@@ -19,6 +19,7 @@ class Users
             'usersUid' => $_POST['usersUid'],
             'usersPwd' => $_POST['usersPwd'],
             'role' => 'user',
+            'status' => 1,
         ];
 
         if ($this->userModel->findUserByEmail($data['email'])) {
@@ -29,7 +30,7 @@ class Users
         $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
 
         if ($this->userModel->register($data)) {
-            header("../index.php");
+            header("location: ../View/");
             exit;
         }
     }
@@ -51,10 +52,15 @@ class Users
             if ($loggedInUser) {
 
                 if ($loggedInUser->role == 'admin') {
+                    $_SESSION['details'] = [];
                     $this->createUserSession($loggedInUser);
                     header("location: ../View/admin.php");
                     exit;
                 } else {
+                    if ($loggedInUser->status == 0) { 
+                        echo"You are blocked please Contact you Administrator";
+                        exit;
+                    }
                     $this->createUserSession($loggedInUser);
                     header("location: ../View/");
                     exit;
@@ -80,7 +86,12 @@ class Users
         $_SESSION['role'] = $user->role;
         $_SESSION['usersId'] = $user->usersUid;
         $_SESSION['email'] = $user->email;
-        $_SESSION['profile_path'] = "../assets/" . $user->profile_picture;
+        if($user->profile_picture== null) {
+            $_SESSION['profile_path'] = "../assets/default.jpg"; 
+        }
+        else {
+            $_SESSION['profile_path'] = "../assets/". $user->profile_picture;
+        }
         $_SESSION['address_line1'] = $user->address_line1;
         $_SESSION['mobile_number'] = $user->mobile_number;
         $_SESSION['postcode'] = $user->postcode;
@@ -103,7 +114,7 @@ class Users
     }
 }
 
-$init = new Users;
+$init = new UserController();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST['type']) {

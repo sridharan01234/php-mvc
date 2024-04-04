@@ -119,23 +119,8 @@ if (!isset($_SESSION['usersId'])) {
                 loading="lazy"
               />
             </a>
-
-            <ul
-              class="dropdown-menu dropdown-menu-end"
-              aria-labelledby="navbarDropdownMenuAvatar"
-            >
-              <li>
-                <a class="dropdown-item" href="#">My profile</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Settings</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Logout</a>
-              </li>
-            </ul>
           </div>
-          <form action="../Controller/Users.php" method="GET">
+          <form action="../Controller/UserController.php" method="GET">
             <input type="hidden" name="q" value="logout" />
             <button type="submit" class="logout-btn">
               <span class="text">Logout</span><span>Thanks!</span>

@@ -1,8 +1,7 @@
 <?php require_once "../SessionHelper/SessionHelper.php";
-require_once "../Controller/Admin.php";
+require_once "../Controller/AdminController.php";
 
-
-if (!$_SESSION['role'] == "admin") {
+if ($_SESSION['role'] === "user") {
     header('location: ../index.php');
     exit;
 }
@@ -13,19 +12,20 @@ if (!$_SESSION['role'] == "admin") {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
-    <link rel="stylesheet" href="../style/admin.css" />
     <link
       rel="stylesheet"
       type="text/css"
       href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style/admin.css" />
   </head>
   <body>
-    <form action="../Controller/Admin.php" method="post">
-      <input type="hidden" name="type" value="print" />
-      <button type="submit">List Users</button>
-    </form>
-
     <hr />
     <div class="container bootstrap snippets bootdey">
       <div class="row">
@@ -43,76 +43,87 @@ if (!$_SESSION['role'] == "admin") {
                       <th>&nbsp;</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <?php if(!isset($_SESSION['details'])) { echo "No users Found"; exit; }?>
-                    <?php foreach ($_SESSION['details'] as $email): ?>
-
-                    <?php $email['status'] == '1' ? $email['status'] = "Active" : $email['status'] = "inactive" ?>
+                  <?php foreach ($_SESSION['details'] as $email): ?>
+                  <?php if (!isset($email['email'])): { echo "No users found";break;}?>
+                  <?php endif?>
+                  <?php $email['status'] == '1' ? $email['status'] = "Active" : $email['status'] = "inactive"?>                  <tbody>
                     <tr>
                       <td>
                         <img
-                          src="../assets/.<?php echo $email['profile_picture']?>"
-                          alt="<?php echo $email['profile_picture']?>"
+                          class="rounded-circle shadow-4-strong"
+                          src="<?php echo "../assets/".$email['profile_picture'] ?>"
+                          alt="<?php echo $email['profile_picture'] ?>"
                         />
                         <a href="#" class="user-link"></a>
                         <span class="user-subhead"
-                          ><?php echo $email['usersName']?></span
+                          ><?php echo $email['usersName'] ?></span
                         >
                       </td>
-                      <td><?php echo $email['created_at']?></td>
+                      <td><?php echo $email['created_at'] ?></td>
                       <td class="text-center">
                         <span class="label label-default"
-                          ><?php echo $email['status']?></span
+                          ><?php echo $email['status'] ?></span
                         >
                       </td>
                       <td>
-                        <a href="#"><?php echo $email['email']?></a>
+                        <?php echo $email['email'] ?>
                       </td>
                       <td style="width: 20%">
-                        <form action="../Controller/Admin.php" method="post">
+                        <form action="../Controller/AdminController.php" method="post">
                           <input type="hidden" name="type" value="modify" />
                           <input
                             type="hidden"
                             name="email"
-                            value="<?php echo $email['email']?>"
+                            value="<?php echo $email['email'] ?>"
                           />
                           <input
                             type="hidden"
                             name="status"
-                            value="<?php echo $email['status']?>"
+                            value="<?php echo $email['status'] ?>"
                           />
-                          <button type="submit">
-                            <a href="#" class="table-link text-warning">
-                              <span class="fa-stack">
-                                <i class="fa fa-square fa-stack-2x"></i>
-                                <i
-                                  class="fa fa-search-plus fa-stack-1x fa-inverse"
-                                ></i>
-                              </span>
-                            </a>
+                          <button type="submit" title="Change Status">
+                            <span class="fa-stack">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pen-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"
+                                />
+                              </svg>
+                            </span>
                           </button>
                         </form>
-                        <form action="../Controller/Admin.php" method="post">
+                        <form action="../Controller/AdminController.php" method="post">
                           <input type="hidden" name="type" value="delete" />
                           <input
                             type="hidden"
                             name="email"
-                            value="<?php echo $email['email']?>"
+                            value="<?php echo $email['email'] ?>"
                           />
-                          <button type="submit">
-                            <a href="#" class="table-link danger">
-                              <span class="fa-stack">
-                                <i class="fa fa-square fa-stack-2x"></i>
-                                <i
-                                  class="fa fa-trash-o fa-stack-1x fa-inverse"
-                                ></i>
-                              </span>
-                            </a>
+                          <button type="submit" title="Delete">
+                            <span class="fa-stack">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                                />
+                              </svg>
+                            </span>
                           </button>
                         </form>
                       </td>
                     </tr>
-
                     <?php endforeach?>
                   </tbody>
                 </table>
@@ -122,5 +133,24 @@ if (!$_SESSION['role'] == "admin") {
         </div>
       </div>
     </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-auto">
+          <form action="../Controller/AdminController.php" method="post">
+            <input type="hidden" name="type" value="print" />
+            <button type="submit">List Users</button>
+          </form>
+        </div>
+        <div class="col-auto">
+          <a href="index.php"><button>Go to Home</button></a>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../js/script.js"></script>
   </body>
 </html>

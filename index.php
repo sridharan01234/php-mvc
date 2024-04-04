@@ -12,6 +12,7 @@ if(isset($_SESSION['usersId'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/admin.css">
   </head>
 
   <body>
@@ -20,7 +21,7 @@ if(isset($_SESSION['usersId'])) {
         <div class="user signinBx">
           <div class="imgBx"><img src="assets/image.png" alt /></div>
           <div class="formBx">
-            <form method="post" action="./Controller/Users.php">
+            <form method="post" action="./Controller/UserController.php">
               <input type="hidden" name="type" value="login" />
               <h2>Sign In</h2>
               <input type="text" name="name/email" placeholder="E-mail" />
