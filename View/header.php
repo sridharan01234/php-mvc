@@ -1,4 +1,4 @@
-<?php require_once "../SessionHelper/SessionHelper.php";
+<?php require_once "../Helper/SessionHelper.php";
 if (!isset($_SESSION['usersId'])) {
     header('location: ../index.php');
 }
@@ -22,7 +22,7 @@ if (!isset($_SESSION['usersId'])) {
       href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../style/style.min.css" />
+    <link rel="stylesheet" href="../Assets/style/style.min.css" />
     <link
       href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
       rel="stylesheet"

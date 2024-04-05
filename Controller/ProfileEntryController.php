@@ -1,5 +1,5 @@
 <?php
-require_once("../SessionHelper/SessionHelper.php");
+require_once("../Helper/SessionHelper.php");
 require_once '../Model/UserModel.php';
 class ProfileEntryController
 {
@@ -16,7 +16,7 @@ class ProfileEntryController
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
             $file_extension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
             $file_name = $_SESSION['email'] . "." . $file_extension;
-            $target_file = "../assets/".$file_name;
+            $target_file = "../Assets/ProfilePictures".$file_name;
             if(!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                 echo"File is not uploaded";
                 exit;
@@ -39,7 +39,7 @@ class ProfileEntryController
         ];
 
         if ($this->userModel->enterDetails($user)) {
-            $_SESSION['profile_path'] = "../assets/".$user['profile_path'];
+            $_SESSION['profile_path'] = "../Assets/ProfilePictures/".$user['profile_path'];
             $_SESSION['address_line1'] = $user['address_line1'];
             $_SESSION['mobile_number'] = $user['mobile_number'];
             $_SESSION['postcode'] = $user['postcode'];

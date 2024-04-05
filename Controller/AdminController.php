@@ -1,5 +1,5 @@
 <?php
-require_once("../SessionHelper/SessionHelper.php");
+require_once("../Helper/SessionHelper.php");
 require_once '../Model/UserModel.php';
 
 class AdminController {

@@ -12,7 +12,7 @@ class UserModel
 
     public function findUserByEmail($email)
     {
-        $this->db->query('SELECT * FROM users WHERE email = :email');
+        $this->db->query('SELECT * FROM user WHERE email = :email');
         $this->db->bind(':email', $email);
 
         $row = $this->db->single();
@@ -25,12 +25,12 @@ class UserModel
     }
     public function register($data)
     {
-        $this->db->query('INSERT INTO users (usersName, email, usersUid, usersPwd, role, status)
+        $this->db->query('INSERT INTO user (usersName, email, usersUid, user_pass, role, status)
         VALUES (:name, :email, :Uid, :password, :role, :status)');
         $this->db->bind(':name', $data['usersName']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':Uid', $data['usersUid']);
-        $this->db->bind(':password', $data['usersPwd']);
+        $this->db->bind(':password', $data['user_pass']);
         $this->db->bind(':role', $data['role']);
         $this->db->bind(':status', $data['status']);
 
@@ -49,7 +49,7 @@ class UserModel
             return false;
         }
 
-        $hashedPassword = $row->usersPwd;
+        $hashedPassword = $row->user_password;
         if (password_verify($password, $hashedPassword)) {
             return $row;
         } else {
@@ -59,7 +59,7 @@ class UserModel
 
     public function enterDetails($data)
     {
-        $this->db->query('UPDATE users SET first_name = :firstname, last_name = :lastname, mobile_number= :mobile_number, address_line1= :address_line1, postcode= :postcode, state= :state, email= :email, education= :education, country= :country, profile_picture= :profile_path WHERE email = :email');
+        $this->db->query('UPDATE user SET first_name = :firstname, last_name = :lastname, mobile_number= :mobile_number, address_line1= :address_line1, postcode= :postcode, state= :state, email= :email, education= :education, country= :country, profile_picture= :profile_path WHERE email = :email');
         $this->db->bind(':firstname', $data['first_name']);
         $this->db->bind(':lastname', $data['last_name']);
         $this->db->bind(':mobile_number', $data['mobile_number']);
@@ -78,7 +78,7 @@ class UserModel
     }
 
     public function delete($data) { 
-        $this->db->query('DELETE FROM users WHERE email = :email');
+        $this->db->query('DELETE FROM user WHERE email = :email');
         $this->db->bind(':email', $data);
         if( $this->db->execute() ) { 
             return true;
@@ -89,7 +89,7 @@ class UserModel
     }
 
     public function modify($data,$status) {
-        $this->db->query('UPDATE users SET status = :status WHERE email = :email');
+        $this->db->query('UPDATE user SET status = :status WHERE email = :email');
         $this->db->bind(':status', $status);
         $this->db->bind(':email', $data);
         if( $this->db->execute() ) { 
@@ -101,7 +101,7 @@ class UserModel
     }
 
     public function listAllUser() {
-        $this->db->query('SELECT * FROM users WHERE role =:admin');
+        $this->db->query('SELECT * FROM user WHERE role =:admin');
         $this->db->bind(':admin',"user");
         $row = $this->db->resultSet();
         if ($this->db->rowCount() > 0) {

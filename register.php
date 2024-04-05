@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="Assets/style/style.css" />
   </head>
 
   <body>
@@ -38,7 +38,6 @@
               <p id="Valid-Email" class="glyphicon glyphicon-remove">
                 Invalid Email
               </p>
-              <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
               <div class="form-group has-feedback">
                 <input
                   class="form-control"
@@ -82,11 +81,12 @@
             </form>
           </div>
           <div class="imgBx">
-            <img src="assets/image.png" alt="Welcome Image" />
+            <img src="Assets/image.png" alt="Welcome Image" />
           </div>
         </div>
       </div>
     </section>
-    <script src="js/script.js"></script>
+    <script src="Assets/js/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </body>
 </html>

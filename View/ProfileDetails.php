@@ -1,6 +1,6 @@
-<?php require_once "../SessionHelper/SessionHelper.php";
+<?php require_once "../Helper/SessionHelper.php";
 if (!isset($_SESSION['usersId'])) {
-    header('location: ../index.php');
+  header('location: ../index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@ if (!isset($_SESSION['usersId'])) {
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="../style/style.min.css" />
+    <link rel="stylesheet" href="../Assets/style/style.min.css" />
   </head>
   <body>
     <div class="container">

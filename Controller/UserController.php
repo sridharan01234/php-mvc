@@ -1,5 +1,5 @@
 <?php
-require_once "../SessionHelper/SessionHelper.php";
+require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
 
 class UserController
@@ -57,20 +57,23 @@ class UserController
                     header("location: ../View/admin.php");
                     exit;
                 } else {
-                    if ($loggedInUser->status == 0) { 
-                        echo"You are blocked please Contact you Administrator";
+                    if ($loggedInUser->status == 0) {
+                        $message = "You are blocked please Contact you Administrator";
+                        header("location: ../index.php?$message");
                         exit;
                     }
                     $this->createUserSession($loggedInUser);
-                    header("location: ../View/");
-                    exit;
+                    //include '../View/index.php';
+                    echo 'Hii';
                 }
             } else {
-                header("location: ../index.php");
+                $message = "Incorrect Password";
+                header("location: ../index.php?$message");
                 exit;
             }
         } else {
-            header("location: ../index.php");
+            $message = "Email is not registered";
+            header("location: ../index.php?$message");
             exit;
         }
     }
@@ -84,13 +87,12 @@ class UserController
     public function createUserSession($user)
     {
         $_SESSION['role'] = $user->role;
-        $_SESSION['usersId'] = $user->usersUid;
+        $_SESSION['usersId'] = $user->user_id;
         $_SESSION['email'] = $user->email;
-        if($user->profile_picture== null) {
-            $_SESSION['profile_path'] = "../assets/default.jpg"; 
-        }
-        else {
-            $_SESSION['profile_path'] = "../assets/". $user->profile_picture;
+        if ($user->profile_picture == null) {
+            $_SESSION['profile_path'] = "../Assets/ProfilePicture/default.jpg";
+        } else {
+            $_SESSION['profile_path'] = "../Assets/ProfilePictures/" . $user->profile_picture;
         }
         $_SESSION['address_line1'] = $user->address_line1;
         $_SESSION['mobile_number'] = $user->mobile_number;
@@ -109,7 +111,7 @@ class UserController
         unset($_SESSION['usersName']);
         unset($_SESSION['email']);
         session_destroy();
-        header("location: ../index.php");
+        header("location: ../");
         exit;
     }
 }
