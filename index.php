@@ -1,8 +1,10 @@
 <?php require_once("Helper/SessionHelper.php");
-if(isset($_SESSION['usersId'])) {
-  header('location: ../php-mvc/View/');
-  exit;
-}
+
+
+// if(isset($_SESSION['usersId'])) {
+//   header('location: ../php-mvc/View/');
+//   exit;
+// }
 
 if(isset($_GET)) {
   $message = implode(",",array_keys($_GET));

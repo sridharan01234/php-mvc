@@ -23,7 +23,8 @@ class UserController
         ];
 
         if ($this->userModel->findUserByEmail($data['email'])) {
-            header("location: ../index.php");
+            $message = "Email already exist";
+            header("location: ../index.php?$message");
             exit;
         }
 
