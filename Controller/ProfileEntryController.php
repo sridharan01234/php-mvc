@@ -21,6 +21,8 @@ class ProfileEntryController
                 echo"File is not uploaded";
                 exit;
             }
+
+            
     }
     else {
         $file_name = $_SESSION['profile_path'];

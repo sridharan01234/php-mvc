@@ -1,5 +1,5 @@
 <?php require_once "../Helper/SessionHelper.php";
-if (!isset($_SESSION['usersId'])) {
+if (!isset($_SESSION['full_name'])) {
     header('location: ../index.php');
 }
 ?>

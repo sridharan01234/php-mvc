@@ -14,10 +14,9 @@ class UserController
     public function register()
     {
         $data = [
-            'usersName' => $_POST['usersName'],
+            'user_name' => $_POST['user_name'],
             'email' => $_POST['email'],
-            'usersUid' => $_POST['usersUid'],
-            'usersPwd' => $_POST['usersPwd'],
+            'user_pass' => $_POST['user_pass'],
             'role' => 'user',
             'status' => 1,
         ];
@@ -28,7 +27,7 @@ class UserController
             exit;
         }
 
-        $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
+        $data['user_pass'] = password_hash($data['user_pass'], PASSWORD_DEFAULT);
 
         if ($this->userModel->register($data)) {
             header("location: ../View/");
@@ -40,16 +39,16 @@ class UserController
     {
         $data = [
             'name/email' => $_POST['name/email'],
-            'usersPwd' => $_POST['usersPwd'],
+            'user_pass' => $_POST['user_pass'],
         ];
 
-        if (empty($data['name/email']) || empty($data['usersPwd'])) {
+        if (empty($data['name/email']) || empty($data['user_pass'])) {
             header("location: ../index.php");
             exit();
         }
 
         if ($this->userModel->findUserByEmail($data['name/email'])) {
-            $loggedInUser = $this->userModel->login($data['name/email'], $data['usersPwd']);
+            $loggedInUser = $this->userModel->login($data['name/email'], $data['user_pass']);
             if ($loggedInUser) {
 
                 if ($loggedInUser->role == 'admin') {
@@ -64,8 +63,8 @@ class UserController
                         exit;
                     }
                     $this->createUserSession($loggedInUser);
-                    //include '../View/index.php';
-                    echo 'Hii';
+                    header("location: ../View/admin.php");
+                    exit;
                 }
             } else {
                 $message = "Incorrect Password";
@@ -88,7 +87,6 @@ class UserController
     public function createUserSession($user)
     {
         $_SESSION['role'] = $user->role;
-        $_SESSION['usersId'] = $user->user_id;
         $_SESSION['email'] = $user->email;
         if ($user->profile_picture == null) {
             $_SESSION['profile_path'] = "../Assets/ProfilePicture/default.jpg";
@@ -108,8 +106,7 @@ class UserController
 
     public function logout()
     {
-        unset($_SESSION['usersId']);
-        unset($_SESSION['usersName']);
+        unset($_SESSION['user_name']);
         unset($_SESSION['email']);
         session_destroy();
         header("location: ../");

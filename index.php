@@ -1,10 +1,10 @@
 <?php require_once("Helper/SessionHelper.php");
 
 
-// if(isset($_SESSION['usersId'])) {
-//   header('location: ../php-mvc/View/');
-//   exit;
-// }
+if(isset($_SESSION['full_name'])) {
+  header('location: ../php-mvc/View/');
+  exit;
+}
 
 if(isset($_GET)) {
   $message = implode(",",array_keys($_GET));
@@ -36,7 +36,7 @@ else {
               <h2>Sign In</h2>
               <?php echo"$message"?>
               <input type="text" name="name/email" placeholder="E-mail" />
-              <input type="password" name="usersPwd" placeholder="Password" />
+              <input type="password" name="user_pass" placeholder="Password" />
               <input type="submit" name value="Login" />
               <p class="signup">
                 Don't have an account ?

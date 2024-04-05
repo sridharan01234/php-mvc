@@ -51,7 +51,7 @@ if ($_SESSION['role'] === "user") {
                         />
                         <a href="#" class="user-link"></a>
                         <span class="user-subhead"
-                          ><?php echo $email['usersName'] ?></span
+                          ><?php echo $email['user_name'] ?></span
                         >
                       </td>
                       <td><?php echo $email['created_at'] ?></td>

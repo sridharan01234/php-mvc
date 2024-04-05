@@ -1,5 +1,5 @@
 <?php require_once "../Helper/SessionHelper.php";
-if (!isset($_SESSION['usersId'])) {
+if (!isset($_SESSION['user_name'])) {
   header('location: ../index.php');
 }
 ?>
@@ -33,7 +33,7 @@ if (!isset($_SESSION['usersId'])) {
                       </div>
                     </div>
                   <div class="mt-3">
-                    <h4><?php echo $_SESSION['usersId'] ?></h4>
+                    <h4><?php echo $_SESSION['user_name'] ?></h4>
                     <p class="text-secondary mb-1">Impact Trainee</p>
                     <p class="text-muted font-size-sm">
                       <?php echo $_SESSION['address_line1'] ?>

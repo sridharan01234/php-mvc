@@ -18,14 +18,14 @@
               <input
                 type="text"
                 id="fname"
-                name="usersName"
+                name="user_name"
                 placeholder="Enter your Fullname"
                 required
               />
               <input
                 type="text"
                 id="lname"
-                name="usersUid"
+                name="user_id"
                 placeholder="Enter Username"
                 required
               />
@@ -67,7 +67,7 @@
               <input
                 type="password"
                 id="ConfirmPassword"
-                name="usersPwd"
+                name="user_pass"
                 placeholder="Confirm Password"
               />
               <p id="Match" class="glyphicon glyphicon-remove">
