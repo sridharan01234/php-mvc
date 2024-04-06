@@ -56,7 +56,7 @@ class UserModel
         }
     }
 
-    public function enterDetails($data)
+    public function enterDetails($data): bool
     {
         $this->db->query('UPDATE user SET first_name = :firstname, last_name = :lastname, mobile_number= :mobile_number, address_line1= :address_line1, postcode= :postcode, state= :state, email= :email, education= :education, country= :country, profile_picture= :profile_path WHERE email = :email');
         $this->db->bind(':firstname', $data['first_name']);
@@ -76,32 +76,33 @@ class UserModel
         }
     }
 
-    public function delete($data) { 
+    public function delete($data): bool
+    {
         $this->db->query('DELETE FROM user WHERE email = :email');
         $this->db->bind(':email', $data);
-        if( $this->db->execute() ) { 
+        if ($this->db->execute()) {
             return true;
-        }
-        else { 
+        } else {
             return false;
         }
     }
 
-    public function modify($data,$status) {
+    public function modify($data, $status): bool
+    {
         $this->db->query('UPDATE user SET status = :status WHERE email = :email');
         $this->db->bind(':status', $status);
         $this->db->bind(':email', $data);
-        if( $this->db->execute() ) { 
+        if ($this->db->execute()) {
             return true;
-        }
-        else { 
+        } else {
             return false;
         }
     }
 
-    public function listAllUser() {
+    public function listAllUser()
+    {
         $this->db->query('SELECT * FROM user WHERE role =:admin');
-        $this->db->bind(':admin',"user");
+        $this->db->bind(':admin', "user");
         $row = $this->db->resultSet();
         if ($this->db->rowCount() > 0) {
             return $row;
@@ -109,5 +110,15 @@ class UserModel
             return false;
         }
     }
-    
+    public function resetPassword($password): bool
+    {
+
+        $this->db->query('UPDATE user SET user_password = :password');
+        $this->db->bind(':password', $password);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

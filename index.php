@@ -39,6 +39,10 @@ else {
               <input type="password" name="user_pass" placeholder="Password" />
               <input type="submit" name value="Login" />
               <p class="signup">
+                Forgot Password
+                <a href="View/ResetPass.php">Reset with Email</a>
+              </p>
+              <p class="signup">
                 Don't have an account ?
                 <a href="register.php">Sign Up.</a>
               </p>
