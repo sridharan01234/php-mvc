@@ -1,5 +1,5 @@
 <?php
-require_once '../Config/Database.php';
+require_once '../libraries/Database.php';
 
 class UserModel
 {
@@ -110,16 +110,25 @@ class UserModel
             return false;
         }
     }
-    public function resetPassword(string $password, string $email): bool
-    {
 
-        $this->db->query('UPDATE user SET user_password = :password WHERE email = :email');
-        $this->db->bind(':password', $password);
-        $this->db->bind(':email', $email);
-        if ($this->db->execute()) {
+    public function verifyToken(string $token) {
+        $this->db->query('SELECT * FROM token WHERE auth_token =:token');
+        $this->db->bind(':token', $token);
+        $row = $this->db->single();
+        if ($this->db->rowCount() > 0) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public function storeToken($token) {
+        $this->db->query('INSERT INTO token (auth_token)
+        VALUES (:token)');
+        $this->db->bind(':token', $token);
+        if($this->db->execute()) {
+            return true;
+        }
+        return false;
     }
 }

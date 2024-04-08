@@ -13,7 +13,7 @@ class PasswordResetController
     {
         $this->passwordModel = new UserModel();
     }
-
+    
     public function sendOtp(): void
     {
         if ($this->passwordModel->findUserByEmail($_POST['email'])) {
@@ -44,6 +44,7 @@ class PasswordResetController
             } else {
                 $_SESSION['email'] = $_POST['email'];
                 $_SESSION['OTP'] = "sent";
+                $this->passwordModel->updateOtpStatus($_SESSION['email']);
                 header('location: ../View/EnterOpt.php');
                 exit;
             }
@@ -56,12 +57,20 @@ class PasswordResetController
 
     public function verifyOtp(): void
     {
-        if ($_POST['Otp'] == $_SESSION['Otp']) {
-            header("location: ../View/NewPassword.php");
+
+        if($this->passwordModel->checkExpiry()) {
+            if ($_POST['Otp'] == $_SESSION['Otp']) {
+                header("location: ../View/NewPassword.php");
+                exit;
+            } else {
+                unset($_SESSION);
+                echo "Incorrect Otp";
+            }
+        }
+        else {
+            $message = "";
+            header("location: ../ResetPass.php?$message=>'Your Otp is Expired Please Send Again'");
             exit;
-        } else {
-            unset($_SESSION);
-            echo "Incorrect Otp";
         }
     }
 

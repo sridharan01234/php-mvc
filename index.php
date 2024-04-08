@@ -23,6 +23,9 @@ else {
     <title>Login</title>
     <link rel="stylesheet" href="Assets/style/style.css" />
     <link rel="stylesheet" href="Assets/style/admin.css">
+    <script src= 
+		"https://www.google.com/recaptcha/api.js" async defer> 
+	</script> 
   </head>
 
   <body>
@@ -37,7 +40,14 @@ else {
               <?php echo"$message"?>
               <input type="text" name="name/email" placeholder="E-mail" />
               <input type="password" name="user_pass" placeholder="Password" />
-              <input type="submit" name value="Login" />
+			<div class="g-recaptcha"
+				data-sitekey="6Lf1ObQpAAAAANQU4tUwFAmWgBS51GfU4y0pqFAO"> 
+			</div> 
+			<br> 
+
+			<button type="submit" name="submit_btn"> 
+				Submit 
+			</button> 
               <p class="signup">
                 Forgot Password
                 <a href="View/ResetPass.php">Reset with Email</a>
