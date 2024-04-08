@@ -1,5 +1,5 @@
 <?php
-require_once '../libraries/Database.php';
+require_once '../Config/Database.php';
 
 class UserModel
 {
@@ -10,7 +10,7 @@ class UserModel
         $this->db = new Database;
     }
 
-    public function findUserByEmail($email)
+    public function findUserByEmail(string $email): bool | object
     {
         $this->db->query('SELECT * FROM user WHERE email = :email');
         $this->db->bind(':email', $email);
@@ -23,7 +23,7 @@ class UserModel
             return false;
         }
     }
-    public function register($data)
+    public function register(array $data): bool
     {
         $this->db->query('INSERT INTO user (user_name, email, user_password, role, status)
         VALUES (:name, :email, :password, :role, :status)');
@@ -40,9 +40,9 @@ class UserModel
         }
     }
 
-    public function login($nameOrEmail, $password)
+    public function login(string $email, string $password): bool | object
     {
-        $row = $this->findUserByEmail($nameOrEmail);
+        $row = $this->findUserByEmail($email);
 
         if ($row == false) {
             return false;
@@ -56,7 +56,7 @@ class UserModel
         }
     }
 
-    public function enterDetails($data): bool
+    public function enterDetails(array $data): bool
     {
         $this->db->query('UPDATE user SET first_name = :firstname, last_name = :lastname, mobile_number= :mobile_number, address_line1= :address_line1, postcode= :postcode, state= :state, email= :email, education= :education, country= :country, profile_picture= :profile_path WHERE email = :email');
         $this->db->bind(':firstname', $data['first_name']);
@@ -76,7 +76,7 @@ class UserModel
         }
     }
 
-    public function delete($data): bool
+    public function delete(string $data): bool
     {
         $this->db->query('DELETE FROM user WHERE email = :email');
         $this->db->bind(':email', $data);
@@ -87,7 +87,7 @@ class UserModel
         }
     }
 
-    public function modify($data, $status): bool
+    public function modify(string $data, string $status): bool
     {
         $this->db->query('UPDATE user SET status = :status WHERE email = :email');
         $this->db->bind(':status', $status);
@@ -99,7 +99,7 @@ class UserModel
         }
     }
 
-    public function listAllUser()
+    public function listAllUser(): bool | array
     {
         $this->db->query('SELECT * FROM user WHERE role =:admin');
         $this->db->bind(':admin', "user");
@@ -110,11 +110,12 @@ class UserModel
             return false;
         }
     }
-    public function resetPassword($password): bool
+    public function resetPassword(string $password, string $email): bool
     {
 
-        $this->db->query('UPDATE user SET user_password = :password');
+        $this->db->query('UPDATE user SET user_password = :password WHERE email = :email');
         $this->db->bind(':password', $password);
+        $this->db->bind(':email', $email);
         if ($this->db->execute()) {
             return true;
         } else {

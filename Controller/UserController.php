@@ -11,7 +11,7 @@ class UserController
         $this->userModel = new UserModel;
     }
 
-    public function register()
+    public function register(): void
     {
         $data = [
             'user_name' => $_POST['user_name'],
@@ -35,7 +35,7 @@ class UserController
         }
     }
 
-    public function login()
+    public function login(): void
     {
         $data = [
             'name/email' => $_POST['name/email'],
@@ -78,14 +78,15 @@ class UserController
         }
     }
 
-    public function home()
+    public function home(): void
     {
         header("location: ../View/");
         exit;
     }
 
-    public function createUserSession($user)
+    public function createUserSession($user): void
     {
+        $_SESSION['user_name'] = $user->user_name;
         $_SESSION['role'] = $user->role;
         $_SESSION['email'] = $user->email;
         if ($user->profile_picture == null) {
@@ -104,7 +105,7 @@ class UserController
         $_SESSION['education'] = $user->education;
     }
 
-    public function logout()
+    public function logout(): void
     {
         unset($_SESSION['user_name']);
         unset($_SESSION['email']);

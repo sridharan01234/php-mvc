@@ -1,5 +1,5 @@
 <?php
-require_once("../Helper/SessionHelper.php");
+require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
 class ProfileEntryController
 {
@@ -9,24 +9,21 @@ class ProfileEntryController
     {
         $this->userModel = new UserModel();
     }
-    public function profileEntry()
+    public function profileEntry(): void
     {
         $file_name = "";
 
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
             $file_extension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
             $file_name = $_SESSION['email'] . "." . $file_extension;
-            $target_file = "../Assets/ProfilePictures".$file_name;
-            if(!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
-                echo"File is not uploaded";
+            $target_file = "../Assets/ProfilePictures" . $file_name;
+            if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
+                echo "File is not uploaded";
                 exit;
             }
-
-            
-    }
-    else {
-        $file_name = $_SESSION['profile_path'];
-    }
+        } else {
+            $file_name = $_SESSION['profile_path'];
+        }
         $user = [
             'first_name' => $_POST['first_name'],
             'last_name' => $_POST['last_name'],
@@ -41,7 +38,7 @@ class ProfileEntryController
         ];
 
         if ($this->userModel->enterDetails($user)) {
-            $_SESSION['profile_path'] = "../Assets/ProfilePictures/".$user['profile_path'];
+            $_SESSION['profile_path'] = "../Assets/ProfilePictures/" . $user['profile_path'];
             $_SESSION['address_line1'] = $user['address_line1'];
             $_SESSION['mobile_number'] = $user['mobile_number'];
             $_SESSION['postcode'] = $user['postcode'];
@@ -49,16 +46,14 @@ class ProfileEntryController
             $_SESSION['country'] = $user['country'];
             $_SESSION['first_name'] = $user['first_name'];
             $_SESSION['last_name'] = $user['last_name'];
-            $_SESSION['full_name'] = $user['first_name'].$user['last_name'];
+            $_SESSION['full_name'] = $user['first_name'] . $user['last_name'];
             $_SESSION['education'] = $user['education'];
             header("location: ../View/ProfileDetails.php");
             exit;
         } else {
             var_dump($user);
         }
-
     }
-
 }
 
 $init = new ProfileEntryController();

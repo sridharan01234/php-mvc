@@ -1,9 +1,8 @@
- <?php
-// require_once "../Helper/SessionHelper.php";
-// if(isset($_SESSION['OTP'])) {
-//   header('location: ../index.php');
-//   exit;
-// }
+<?php
+require_once "../Helper/SessionHelper.php";
+if (!isset($_SESSION['Otp'])) {
+    header('location: ../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +27,7 @@
       <input type="hidden" name="type" value="ResetPassword">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label"
-            >Email address</label
+            >New Password</label
           >
           <input
             type="password"
@@ -38,9 +37,6 @@
             name="Password"
             placeholder="Enter New Password"
           />
-          <div id="emailHelp" class="form-text">
-            Enter Your Password
-          </div>
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Confirm Your Password</label>

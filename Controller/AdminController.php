@@ -1,31 +1,38 @@
 <?php
-require_once("../Helper/SessionHelper.php");
+require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
 
-class AdminController {
+class AdminController
+{
     private $adminModel;
-     public function __construct() {
+    public function __construct()
+    {
         $this->adminModel = new UserModel();
     }
 
-    public function delete() { 
+    public function delete(): void
+    {
         $this->adminModel->delete($_POST['email']);
         $this->print();
     }
 
-    public function modify() { 
+    public function modify(): void
+    {
         $status = 0;
-        if($_POST['status']=='inactive') $status = '1';
-        $this->adminModel->modify($_POST['email'],$status);
+        if ($_POST['status'] == 'inactive') {
+            $status = '1';
+        }
+
+        $this->adminModel->modify($_POST['email'], $status);
         $this->print();
-        
+
     }
 
-
-    public function print() { 
-        $data = (array)$this->adminModel->listAllUser();
-        foreach($data as $key => $value) {
-            $data[$key] = (array)$value;
+    public function print(): void
+    {
+        $data = (array) $this->adminModel->listAllUser();
+        foreach ($data as $key => $value) {
+            $data[$key] = (array) $value;
         }
         $_SESSION['details'] = $data;
         header('location: ../View/admin.php');
@@ -34,7 +41,6 @@ class AdminController {
 }
 
 $init = new AdminController();
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST['type']) {

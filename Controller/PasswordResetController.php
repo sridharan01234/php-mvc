@@ -1,12 +1,9 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
 require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
-
 
 class PasswordResetController
 {
@@ -17,11 +14,11 @@ class PasswordResetController
         $this->passwordModel = new UserModel();
     }
 
-    public function sendOtp()
+    public function sendOtp(): void
     {
-        if($this->passwordModel->findUserByEmail($_POST['email']))
-        {
-            $message = rand(100000,999999);
+        if ($this->passwordModel->findUserByEmail($_POST['email'])) {
+            $email = $_POST['email'];
+            $message = rand(100000, 999999);
             $_SESSION['Otp'] = $message;
             $mail = new PHPMailer(true);
             $mail->IsSMTP();
@@ -37,41 +34,43 @@ class PasswordResetController
             $mail->Subject = "Password Reset";
             $mail->Body = "This your Otp for password Reset  : " . $message;
             $mail->AddAddress($_POST['email'], "HR");
-    
+
             $headers = "From: Sender\n";
             $headers .= 'Content-Type:text/calendar; Content-Disposition: inline; charset=utf-8;\r\n';
             $headers .= "Content-Type: text/plain;charset=\"utf-8\"\r\n";
-    
+
             if (!$mail->Send()) {
                 echo "Mail Not sent";
             } else {
+                $_SESSION['email'] = $_POST['email'];
                 $_SESSION['OTP'] = "sent";
-                header("location: ../View/EnterOpt.php");
+                header('location: ../View/EnterOpt.php');
                 exit;
             }
-        }
-        else {
+        } else {
             $message = "Email not Registered";
             header("location: ../index.php?$message");
             exit;
         }
     }
 
-    public function verifyOtp() {
-        if($_POST['Otp'] == $_SESSION['Otp']) {
+    public function verifyOtp(): void
+    {
+        if ($_POST['Otp'] == $_SESSION['Otp']) {
             header("location: ../View/NewPassword.php");
             exit;
-        }
-        else {
+        } else {
+            unset($_SESSION);
             echo "Incorrect Otp";
         }
     }
 
-    function newPassword() {
+    public function newPassword(): void
+    {
         $password = password_hash($_POST['confirmPassword'], PASSWORD_DEFAULT);
-        if($this->passwordModel->resetPassword($password)) {
+        if ($this->passwordModel->resetPassword($password, $_SESSION['email'])) {
             $message = "Password Reset Successfull";
-            header("location: ../index.php?$message");
+            header("location: ../index.php");
             exit;
         }
     }
