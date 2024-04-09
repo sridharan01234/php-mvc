@@ -32,7 +32,7 @@ if (!isset($_SESSION['full_name'])) {
                   >
                     <div class="avatar-wrapper">
                       <img
-                        class="profile-pic"
+                        class="image"
                         src="<?php echo $_SESSION['profile_path'] ?>"
                       />
                       <div class="upload-button">
