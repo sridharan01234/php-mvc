@@ -1,6 +1,6 @@
 <?php require_once "../Helper/SessionHelper.php";
-if (!isset($_SESSION['full_name'])) {
-    header('location: ../index.php');
+if (!isset($_SESSION['email'])) {
+header('location: ../index.php');
 }
 ?>
 
@@ -12,24 +12,21 @@ if (!isset($_SESSION['full_name'])) {
 
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../Assets/style/style.min.css" />
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+      rel="stylesheet" />
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../Assets/style/style.min.css" />
+    <script
+      src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script
+      src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -52,9 +49,9 @@ if (!isset($_SESSION['full_name'])) {
         </div>
 
         <div class="d-flex align-items-center">
-          <?php 
+          <?php
           if($_SESSION['role'] === "admin") {
-            echo'<a href="admin.php">Admin</a>';
+          echo'<a href="admin.php">Admin</a>';
           }
           ?>
           <div class="dropdown">
@@ -63,8 +60,7 @@ if (!isset($_SESSION['full_name'])) {
                 src="<?php echo $_SESSION['profile_path'] ?>"
                 class="rounded-circle"
                 height="50"
-                loading="lazy"
-              />
+                loading="lazy" />
             </a>
           </div>
           <form action="../Controller/UserController.php" method="GET">
