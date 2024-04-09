@@ -91,21 +91,28 @@ class UserController
         if ($this->userModel->findUserByEmail($data['email'])) {
             $loggedInUser = $this->userModel->login($data['email'], $data['user_pass']);
             if ($loggedInUser) {
-                if ($loggedInUser->role == 'admin') {
-                    $_SESSION['details'] = [];
-                    $this->createUserSession($loggedInUser);
-                    header("location: ../View/admin.php");
-                    exit;
-                } else {
-                    if ($loggedInUser->status == 0) {
-                        $message = "You are blocked. Please contact your administrator.";
-                        header("location: ../index.php?$message");
-                        exit;
-                    }
-                    $this->createUserSession($loggedInUser);
-                    header("location: ../View/admin.php");
+                if($loggedInUser->email_confirmation == 'Not Verfied' || $loggedInUser->email_confirmation == 'null') {
+                    header('location: ../View/EmailVerification.php');
                     exit;
                 }
+                else {
+                    if ($loggedInUser->role == 'admin') {
+                        $_SESSION['details'] = [];
+                        $this->createUserSession($loggedInUser);
+                        header("location: ../View/admin.php");
+                        exit;
+                    } else {
+                        if ($loggedInUser->status == 0) {
+                            $message = "You are blocked. Please contact your administrator.";
+                            header("location: ../index.php?$message");
+                            exit;
+                        }
+                        $this->createUserSession($loggedInUser);
+                        header("location: ../View/admin.php");
+                        exit;
+                    }
+                }
+
             } else {
                 $message = "Incorrect Password";
                 header("location: ../index.php?$message");
@@ -205,8 +212,8 @@ class UserController
      */
     function emailConfirmation($email)  {
         if($this->registrationLink($email)) {
-            $_SESSION['email_confirmation']  = 'verfied';
-            header("location: ../View/ProfileDetails.php");
+            $message = "Registration Link Sent Successfull open you mail to Confirm";
+            header("location: ../index.php?$message");
             exit;
         }
     }
