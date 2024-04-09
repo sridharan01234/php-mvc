@@ -28,7 +28,7 @@ class ProfileEntryController
             // Generating file name using user's email and extension
             $file_name = $_SESSION['email'] . "." . $file_extension;
             // Setting target file path
-            $target_file = "../Assets/ProfilePictures" . $file_name;
+            $target_file = "../Assets/ProfilePictures/" . $file_name;
             // Moving uploaded file to target location
             if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                 echo "File is not uploaded"; // Error message if file upload fails
