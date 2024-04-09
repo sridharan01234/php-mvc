@@ -218,18 +218,35 @@ class UserModel
      * @param string $token The token to be stored
      * @return bool Returns true if token is stored successfully, otherwise returns false
      */
-    public function storeToken(string $token): bool
+    public function storeToken(string $token, string $email): bool
     {
-        // SQL query to insert token
-        $this->db->query('INSERT INTO token (auth_token) VALUES (:token)');
-        // Binding token parameter
-        $this->db->bind(':token', $token);
 
-        // Executing the query
+        $this->db->query('INSERT INTO token (auth_token, email)
+        VALUES (:token, :email)');
+        $this->db->bind(':token', $token);
+        $this->db->bind(':email', $email);
         if ($this->db->execute()) {
-            return true; // Returning true if token is stored successfully
+            $this->db->query('UPDATE token SET time = NOW() WHERE auth_token =:token');
+            $this->db->bind(':token', $token);
+            if ($this->db->execute()) {
+                return true;
+            }
+            return false;
         } else {
-            return false; // Returning false if storing token fails
+            return false;
         }
+
+    }
+
+    function updateEmailConfirmation($token)  
+    {
+        $this->db->query('SELECT * FROM token WHERE auth_token = :token');
+        $this->db->bind(':token', $token);
+        $row = $this->db->single();
+        $email = $row->email;
+        $this->db->query('UPDATE user SET email_confirmation =:verfied WHERE email =:email');
+        $this->db->bind(':verfied','verfied');
+        $this->db->bind(':email',$email);
+        $this->db->execute();
     }
 }

@@ -15,8 +15,12 @@ class RegistrationLinkController
      */
     public function verifyToken(): void
     {
-        if($this->tokenModel->verifyToken(implode('', array_keys($_GET)))) {
-            echo'Token Okay';
+        $token = implode('', array_keys($_GET));
+        if($this->tokenModel->verifyToken($token)) {
+            $this->tokenModel->updateEmailConfirmation($token);
+            $message = "Email Verfication Success";
+            header("location: ../index.php?$message");
+            exit;
         }
         else {
             var_dump(implode('', array_keys($_GET)));
