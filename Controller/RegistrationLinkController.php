@@ -10,7 +10,10 @@ class RegistrationLinkController
         $this->tokenModel = new UserModel();
     }
 
-    public function verifyToken()
+    /**
+     * gets token in get methods and checks with model and return whether it is valid for not
+     */
+    public function verifyToken(): void
     {
         if($this->tokenModel->verifyToken(implode('', array_keys($_GET)))) {
             echo'Token Okay';
@@ -23,6 +26,10 @@ class RegistrationLinkController
     }
 
 }
+
+/** 
+ * Receives request from client and performs according to the request
+*/
 
 $init = new RegistrationLinkController();
 
