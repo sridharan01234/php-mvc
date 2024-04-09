@@ -122,7 +122,7 @@ section .container .user {
 
 section .container .user .imgBx {
   position: relative;
-  width: 50%;
+  width: 100%;
   height: 100%;
   background: #ff0;
   transition: 0.5s;
@@ -139,7 +139,7 @@ section .container .user .imgBx img {
 
 section .container .user .formBx {
   position: relative;
-  width: 50%;
+  width: 100%;
   height: 100%;
   background: #fff;
   display: flex;
@@ -396,7 +396,7 @@ nav ul li:hover {
 
 form {
   margin: 10px auto 0 auto;
-  max-width: 600px;
+  max-width: 400px;
   width: 100%;
   padding: 0 20px;
 }
@@ -486,48 +486,24 @@ a:active {
   text-decoration: none;
   color: inherit;
 }
-
-#otp {
-  display: none;
-}
-
-
-.container { 
-	border: 1px solid rgb(73, 72, 72); 
-	border-radius: 10px; 
-	margin: auto; 
-	padding: 10px; 
-	text-align: center; 
-} 
-	
-h1 { 
-	margin-top: 10px; 
-} 
-	
-input[type="text"] { 
-	padding: 10px; 
-	border-radius: 5px; 
-	margin: 10px; 
-	font-family: "Times New Roman", Times, serif; 
-	font-size: larger; 
-} 
-	
-button { 
-	border-radius: 5px; 
-	padding: 10px; 
-	color: #fff; 
-	background-color: #167deb; 
-	border-color: #0062cc; 
-	font-weight: bolder; 
-	cursor: pointer; 
-} 
-	
-button:hover { 
-	text-decoration: none; 
-	background-color: #0069d9; 
-	border-color: #0062cc; 
-} 
 	
 .g-recaptcha { 
 	margin-left: 513px; 
+}
+
+section .container .user .formBx form .g-recaptcha {
+  width: 100%;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 8px 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+div-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
