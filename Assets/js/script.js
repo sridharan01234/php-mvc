@@ -3,6 +3,20 @@ const toggleForm = () => {
   container.classList.toggle("active");
 };
 
+function validateLoginForm() {
+  if (document.forms["loginForm"]["email"].value == "" || document.forms["loginForm"]["user_pass"].value == "") {
+    alert("All the Fields must be Filled");
+    return false;
+  }
+}
+
+  function validateSignUpForm() {
+    if (document.forms["signUpForm"]["user_name"].value == "" || document.forms["signUpForm"]["user_id"].value == ""|| document.forms["signUpForm"]["email"].value == ""|| document.forms["signUpForm"]["user_pass"].value == ""|| document.forms["signUpForm"]["password"].value == "") {
+      alert("All the Fields must be Filled");
+      return false;
+    }
+}
+
 var password = "";
 
 function ValidatePassword() {
@@ -94,3 +108,6 @@ document.getElementById("Email").addEventListener("input", function () {
 function sendOtp() {
   document.getElementById('otp').style.display = "block";
 } 
+
+
+console.log("Hiiiiii");

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="Assets/style/style.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="Assets/js/script.js" async defer></script>
   </head>
 
   <body>
@@ -12,7 +14,7 @@
       <div class="container">
         <div class="user signinBx">
           <div class="formBx">
-            <form method="post" action="./Controller/UserController.php">
+            <form name = "signUpForm" onsubmit="return validateSignUpForm()"method="post" action="./Controller/UserController.php">
               <input type="hidden" name="type" value="register" />
               <h2>Create an account</h2>
               <input
@@ -20,14 +22,12 @@
                 id="fname"
                 name="user_name"
                 placeholder="Enter your Fullname"
-                required
               />
               <input
                 type="text"
                 id="lname"
                 name="user_id"
                 placeholder="Enter Username"
-                required
               />
               <input
                 type="email"
@@ -44,7 +44,7 @@
                   id="NewPassword"
                   placeholder="New Password"
                   type="password"
-                  required
+                  name="password"
                 />
                 <span
                   class="glyphicon glyphicon-lock form-control-feedback"
@@ -73,20 +73,15 @@
               <p id="Match" class="glyphicon glyphicon-remove">
                 Confirm Your Password
               </p>
-              <button type="submit" name="submit">Sign Up</button>
+              <input type="submit" value="Sign Up">
               <p class="signup">
                 Already have an account ?
                 <a href="index.php">Sign in.</a>
               </p>
             </form>
           </div>
-          <div class="imgBx">
-            <img src="Assets/image.png" alt="Welcome Image" />
-          </div>
         </div>
       </div>
     </section>
-    <script src="Assets/js/script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </body>
 </html>
