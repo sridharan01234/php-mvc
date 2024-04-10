@@ -3,18 +3,22 @@ const toggleForm = () => {
   container.classList.toggle("active");
 };
 
-function validateLoginForm() {
+function validateForm() {
+  let text = document.getElementById("recaptcha-accessible-status");
+  let captcha = text = text.textContent;
   if (document.forms["loginForm"]["email"].value == "" || document.forms["loginForm"]["user_pass"].value == "") {
-    alert("All the Fields must be Filled");
+    }
+    if(captcha !== 'You are verified') {
+    alert("Please Complete Captacha");
     return false;
-  }
-}
+    }
 
   function validateSignUpForm() {
     if (document.forms["signUpForm"]["user_name"].value == "" || document.forms["signUpForm"]["user_id"].value == ""|| document.forms["signUpForm"]["email"].value == ""|| document.forms["signUpForm"]["user_pass"].value == ""|| document.forms["signUpForm"]["password"].value == "") {
       alert("All the Fields must be Filled");
       return false;
     }
+}
 }
 
 var password = "";

@@ -21,6 +21,7 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="Assets/style/style.css" />
+    <script src="Assets/js/script.js" async defer></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
@@ -56,6 +57,5 @@ else {
         </div>
       </div>
     </section>
-    <script src="Assets/js/script.js"></script>
   </body>
 </html>
