@@ -69,14 +69,4 @@ class AdminController extends BaseController
         header('location: ../View/admin.php');
         exit;
     }
-
-        /**
-     * Error logger
-     * 
-     * @param string $log
-     * @return void
-     */
-    public function logger(string $log):void {
-        error_log($log);
-    }
 }

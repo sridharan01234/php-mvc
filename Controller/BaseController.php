@@ -7,5 +7,8 @@ abstract class BaseController {
      * @param string $log
      * @return void
      */
-    abstract public function logger(string $log):void;
+     public function logger(string $log):void
+     {
+        error_log($log);
+     }
 }

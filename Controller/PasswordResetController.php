@@ -109,15 +109,4 @@ class PasswordResetController extends BaseController
             $this->logger("user ".$_SESSION['email']." Password is changed");
         }
     }
-
-    /**
-     * Error logger
-     * 
-     * @param string $log
-     * @return void
-     */
-    public function logger(string $log): void
-    {
-        error_log($log);   
-    }
 }

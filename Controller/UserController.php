@@ -8,7 +8,8 @@ require '../vendor/autoload.php';
 /**
  * Controller class for managing user-related operations.
  */
-class UserController extends BaseController
+class UserController extends BaseController implements UserInterface
+
 {
     private $userModel;
 
@@ -19,7 +20,6 @@ class UserController extends BaseController
     {
         $this->userModel = new UserModel;
     }
-
     /**
      * Handles user registration process.
      *
@@ -248,15 +248,5 @@ class UserController extends BaseController
         else {
             $this->logger("Registration link send failed for user :".$email);
         }
-    }
-
-    /**
-     * Error logger
-     * 
-     * @param string $log
-     * @return void
-     */
-    public function logger(string $log):void {
-        error_log($log);
     }
 }

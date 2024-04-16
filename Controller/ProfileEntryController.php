@@ -74,14 +74,4 @@ class ProfileEntryController extends  BaseController
             $this->logger("updating user details in db failed for user ".$_SESSION['email']." is failed");
         }
     }
-
-        /**
-     * Error logger
-     * 
-     * @param string $log
-     * @return void
-     */
-    public function logger(string $log):void {
-        error_log($log);
-    }
 }

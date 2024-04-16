@@ -18,7 +18,6 @@ class RegistrationLinkController extends BaseController
      */
     public function verifyToken(): void
     {
-        //var_dump($_GET);
         $token = $_GET['token'];
         if ($this->tokenModel->verifyToken($token)) {
             $this->tokenModel->updateEmailConfirmation($token);
@@ -31,15 +30,4 @@ class RegistrationLinkController extends BaseController
         }
 
     }
-
-    /**
-     * Error logger
-     * 
-     * @param string $log
-     * @return void
-     */
-    public function logger(string $log):void {
-        error_log($log);
-    }
-
 }
