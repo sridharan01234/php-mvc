@@ -1,7 +1,8 @@
 <?php
+require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
 
-class RegistrationLinkController
+class RegistrationLinkController extends BaseController
 {
 
     private $tokenModel;
@@ -11,32 +12,34 @@ class RegistrationLinkController
     }
 
     /**
-     * gets token in get methods and checks with model and return whether it is valid for not
+     * Gets token in get methods and checks with model and return whether it is valid for not
+     *
+     * @return void
      */
     public function verifyToken(): void
     {
-        $token = implode('', array_keys($_GET));
-        if($this->tokenModel->verifyToken($token)) {
+        //var_dump($_GET);
+        $token = $_GET['token'];
+        if ($this->tokenModel->verifyToken($token)) {
             $this->tokenModel->updateEmailConfirmation($token);
             $message = "Email Verfication Success";
             header("location: ../index.php?$message");
             exit;
-        }
-        else {
-            var_dump(implode('', array_keys($_GET)));
-            echo'UnAuthorized';
+        } else {
+            $this->logger("Invalid Token Entered");
+            echo 'UnAuthorized';
         }
 
     }
 
-}
+    /**
+     * Error logger
+     * 
+     * @param string $log
+     * @return void
+     */
+    public function logger(string $log):void {
+        error_log($log);
+    }
 
-/** 
- * Receives request from client and performs according to the request
-*/
-
-$init = new RegistrationLinkController();
-
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $init->verifyToken();
 }

@@ -26,14 +26,14 @@ if (!isset($_SESSION['email'])) {
                   <div class="avatar-wrapper">
                       <img
                         class="image"
-                        src="<?php echo $_SESSION['profile_path'] ?>"
+                        src="<?php echo "../Assets/ProfilePictures/".$_SESSION['profile_path'] ?>"
                       />
                       <div class="upload-button">
                         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                       </div>
                     </div>
                   <div class="mt-3">
-                    <h4><?php echo $_SESSION['user_name'] ?></h4>
+                    <h4><?php echo $_SESSION['full_name'] ?></h4>
                     <p class="text-secondary mb-1">Impact Trainee</p>
                     <p class="text-muted font-size-sm">
                       <?php echo $_SESSION['address_line1'] ?>
@@ -61,15 +61,6 @@ if (!isset($_SESSION['email'])) {
                   </div>
                   <div class="col-sm-9 text-secondary">
                     <?php echo $_SESSION['email'] ?>
-                    <?php if($_SESSION['email_confirmation'] == 'Not Verfied') {?>
-                  <?php 
-                  echo "
-                  <form action=\"../Controller/UserController.php\" method=\"post\">
-                      <input type=\"hidden\" name=\"type\" value=\"emailVerify\">
-                      <input type=\"hidden\" name=\"email\" value=\"" .$_SESSION['email']. "\">
-                      <input type=\"submit\" value=\"Click Here to verfiy Your email\">
-                  </form>";}
-                  ?>
                   </div>
                 </div>
                 <hr />

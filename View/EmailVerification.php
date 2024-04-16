@@ -22,13 +22,14 @@
     <div class="email-container">
         <div class="email-link">
             <h1>Please Confirm Your Email To Login</h1>
-            <form action="../Controller/UserController.php" method="post">
-                <input type="hidden" name="type" value="emailVerify">
+            <form action="../Controller/RequestHandlingController.php" method="post">
+            <input type="hidden" name="type" value="emailVerify">
             <h1>Enter Your Email Address</h1>
             <input class="input" type="email" name="email" id="" placeholder="Your Email">
             <div>
             <br>
-            <input class="input" type="submit" value="Click Me">
+            <input class="input" typ
+            e="submit" value="Click Me">
             </form>
             </div>
         </div>

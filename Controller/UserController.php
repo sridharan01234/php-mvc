@@ -8,7 +8,7 @@ require '../vendor/autoload.php';
 /**
  * Controller class for managing user-related operations.
  */
-class UserController
+class UserController extends BaseController
 {
     private $userModel;
 
@@ -22,6 +22,8 @@ class UserController
 
     /**
      * Handles user registration process.
+     *
+     * @return void
      */
     public function register(): void
     {
@@ -55,47 +57,55 @@ class UserController
 
     /**
      * Verifies Google reCAPTCHA.
+     *
+     * @return void
      */
-    public function captchaVerify()
+    public function captchaVerify(): void
     {
-            $recaptcha = $_POST['g-recaptcha-response'];
-            $secret_key = '6Lf1ObQpAAAAAMhWS2MXfHq44PxEhOQn9xlbxGOp';
-            $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha;
-            $response = file_get_contents($url);
-            $response = json_decode($response);
+        $recaptcha = $_POST['g-recaptcha-response'];
+        $secret_key = '6Lf1ObQpAAAAAMhWS2MXfHq44PxEhOQn9xlbxGOp';
+        $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha;
+        $response = file_get_contents($url);
+        $response = json_decode($response);
 
-            if ($response->success == false) {
-                $message = "Please complete captcha";
-                header("location: ../index.php?$message");
-                exit;
-            }
+        if ($response->success == false) {
+            $message = "Please complete captcha";
+            header("location: ../index.php?$message");
+            exit;
+        }
     }
 
     /**
      * Handles user login process.
+     *
+     * @return void
      */
     public function login(): void
     {
+        if ($_POST['email'] == "") {
+            $message = "Please Enter Your Email Address";
+            header("location: ../index.php?$message");
+            exit;
+        }
+        if ($_POST['user_pass'] == "") {
+            print_r($_POST['user_pass']);
+            $message = "Please Enter Your Password";
+            header("location: ../index.php?$message");
+            exit;
+        }
         $this->captchaVerify();
         $data = [
             'email' => $_POST['email'],
             'user_pass' => $_POST['user_pass'],
         ];
 
-        // Check for empty fields
-        if (empty($data['email']) || empty($data['user_pass'])) {
-            header("location: ../index.php");
-            exit();
-        }
-
         if ($this->userModel->findUserByEmail($data['email'])) {
             $loggedInUser = $this->userModel->login($data['email'], $data['user_pass']);
             if ($loggedInUser) {
-                if($loggedInUser->email_confirmation == 'Not Verfied' || $loggedInUser->email_confirmation == 'null') {
+                if ($loggedInUser->email_confirmation == 'Not Verfied' || $loggedInUser->email_confirmation == '') {
                     header('location: ../View/EmailVerification.php');
                     exit;
-                }
-                else {
+                } else {
                     if ($loggedInUser->role == 'admin') {
                         $_SESSION['details'] = [];
                         $this->createUserSession($loggedInUser);
@@ -103,6 +113,7 @@ class UserController
                         exit;
                     } else {
                         if ($loggedInUser->status == 0) {
+                            $this->logger($_POST['email']." blocked user tried to log in");
                             $message = "You are blocked. Please contact your administrator.";
                             header("location: ../index.php?$message");
                             exit;
@@ -114,11 +125,13 @@ class UserController
                 }
 
             } else {
+                $this->logger($_POST["email"]." entered a incorrect password");
                 $message = "Incorrect Password";
                 header("location: ../index.php?$message");
                 exit;
             }
         } else {
+            $this->logger($_POST['email']." is not registered is tried to log in ");
             $message = "Email is not registered";
             header("location: ../index.php?$message");
             exit;
@@ -127,6 +140,8 @@ class UserController
 
     /**
      * Redirects user to home page.
+     *
+     * @return void
      */
     public function home(): void
     {
@@ -138,7 +153,7 @@ class UserController
      * Creates session for logged-in user.
      *
      * @param object $user user object
-     * 
+     *
      * @return void
      */
     public function createUserSession(object $user): void
@@ -147,7 +162,7 @@ class UserController
         $_SESSION['role'] = $user->role;
         $_SESSION['email'] = $user->email;
         if ($user->profile_picture == null) {
-            $_SESSION['profile_path'] = "../Assets/ProfilePicture/default.png";
+            $_SESSION['profile_path'] = "default.png";
         } else {
             $_SESSION['profile_path'] = $user->profile_picture;
         }
@@ -165,6 +180,8 @@ class UserController
 
     /**
      * Logs out user.
+     *
+     * @return void
      */
     public function logout(): void
     {
@@ -177,78 +194,69 @@ class UserController
 
     /**
      * Sends registration confirmation link to user's email.
+     *
+     * @return void
+     * @param string $email
      */
     public function registrationLink(string $email): bool
     {
-        $message = md5(uniqid() . rand(1000000, 9999999));
-        $this->userModel->storeToken($message,$email);
-        $message = 'http://localhost/php-mvc/Controller/RegistrationLinkController.php?' . $message;
-        $mail = new PHPMailer(true);
-        $mail->IsSMTP();
-        $mail->SMTPDebug = 0;
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';
-        $mail->Host = "smtp.gmail.com";
-        $mail->Port = 587;
-        $mail->IsHTML(true);
-        $mail->Username = "sridharan01234@gmail.com";
-        $mail->Password = "lhvlpsjsnlszulfz";
-        $mail->SetFrom("sridharan01234@gmail.com", "Sridharan");
-        $mail->Subject = "Email Confirm";
-        $mail->Body = "<a href='$message'>Click Here</a> to Confirm you Registration  <br> <b>This valid Only for 60Minutes</b>";
-        $mail->AddAddress($email, "");
-
-        $headers = "From: Sender\n";
-        $headers .= 'Content-Type:text/calendar; Content-Disposition: inline; charset=utf-8;\r\n';
-        $headers .= "Content-Type: text/plain;charset=\"utf-8\"\r\n";
-        if ($mail->Send()) {
-            return true;
+        try {
+            $message = md5(uniqid() . rand(1000000, 9999999));
+            $this->userModel->storeToken($message, $email);
+            $message = 'http://localhost/php-mvc/Controller/BaseController.php?token=' . $message;
+            $mail = new PHPMailer(true);
+            $mail->IsSMTP();
+            $mail->SMTPDebug = 0;
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = 'tls';
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->IsHTML(true);
+            $mail->Username = "sridharan01234@gmail.com";
+            $mail->Password = "lhvlpsjsnlszulfz";
+            $mail->SetFrom("sridharan01234@gmail.com", "Sridharan");
+            $mail->Subject = "Email Confirm";
+            $mail->Body = "<a href='$message'>Click Here</a> to Confirm you Registration  <br> <b>This valid Only for 60Minutes</b>";
+            $mail->AddAddress($email, "");
+    
+            $headers = "From: Sender\n";
+            $headers .= 'Content-Type:text/calendar; Content-Disposition: inline; charset=utf-8;\r\n';
+            $headers .= "Content-Type: text/plain;charset=\"utf-8\"\r\n";
+            if($mail->Send()) 
+            {
+                return true;
+            }
         }
-        return false;
+        catch (Exception $e) {
+            $this->logger($e->getMessage());
+          }
     }
 
     /**
      * for users without email confirmation to send confirm link
+     *
+     * @return void
+     * @param string $email
      */
-    function emailConfirmation($email)  {
-        if($this->registrationLink($email)) {
+    public function emailConfirmation(string $email): void
+    {
+        if ($this->registrationLink($email)) {
             $message = "Registration Link Sent Successfull open you mail to Confirm";
             header("location: ../index.php?$message");
             exit;
         }
+        else {
+            $this->logger("Registration link send failed for user :".$email);
+        }
+    }
+
+    /**
+     * Error logger
+     * 
+     * @param string $log
+     * @return void
+     */
+    public function logger(string $log):void {
+        error_log($log);
     }
 }
-
-
-// Initiate UserController based on request method
-$init = new UserController();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    switch ($_POST['type']) {
-        case 'register':
-            $init->register();
-            break;
-        case 'login':
-            $init->login();
-            break;
-        case 'emailVerify':
-            $init->emailConfirmation($_POST['email']);
-            break;
-        default:
-            header("location: ../index.php");
-            exit;
-    }
-} else {
-    switch ($_GET['q']) {
-        case 'logout':
-            $init->logout();
-            break;
-        case 'home':
-            $init->home();
-            break; 
-        default:
-            header("location: ../index.php");
-            exit;
-    }
-}
-?>

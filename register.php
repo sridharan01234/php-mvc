@@ -6,7 +6,6 @@
     <title>Login</title>
     <link rel="stylesheet" href="Assets/style/style.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="Assets/js/script.js" async defer></script>
   </head>
 
   <body>
@@ -14,7 +13,7 @@
       <div class="container">
         <div class="user signinBx">
           <div class="formBx">
-            <form name = "signUpForm" onsubmit="return validateSignUpForm()"method="post" action="./Controller/UserController.php">
+            <form name = "signUpForm" onsubmit="return validateSignUpForm()"method="post" action="./Controller/RequestHandlingController.php">
               <input type="hidden" name="type" value="register" />
               <h2>Create an account</h2>
               <input
@@ -83,5 +82,9 @@
         </div>
       </div>
     </section>
+    <script src="Assets/js/script.js"></script>
   </body>
 </html>
+
+
+

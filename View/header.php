@@ -9,7 +9,6 @@ header('location: ../index.php');
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet" />
@@ -57,14 +56,14 @@ header('location: ../index.php');
           <div class="dropdown">
             <a href="ProfileDetails.php">
               <img
-                src="<?php echo $_SESSION['profile_path'] ?>"
+                src="<?php echo "../Assets/ProfilePictures/".$_SESSION['profile_path'] ?>"
                 class="rounded-circle"
                 height="50"
                 loading="lazy" />
             </a>
           </div>
-          <form action="../Controller/UserController.php" method="GET">
-            <input type="hidden" name="q" value="logout" />
+          <form action="../Controller/RequestHandlingController.php" method="GET">
+            <input type="hidden" name="type" value="logout" />
             <button type="submit" class="logout-btn">
               <span class="text">Logout</span>
             </button>

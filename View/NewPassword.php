@@ -20,7 +20,7 @@ if (!isset($_SESSION['Otp'])) {
   <body>
     <div class="container">
       <form
-        action="../Controller/PasswordResetController.php"
+        action="../Controller/RequestHandlingController.php"
         method="post"
         class="col-lg-6 offset-lg-3"
       >

@@ -21,7 +21,6 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="Assets/style/style.css" />
-    <script src="Assets/js/script.js" async defer></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
@@ -33,7 +32,7 @@ else {
         <button type="submit" name="submit_btn">Submit</button>
         <div class="user signinBx">
           <div class="formBx">
-            <form name = "loginForm" onsubmit="return validateForm()" method="post" action="./Controller/UserController.php">
+            <form name = "loginForm" onsubmit="return validateForm()" method="post" action="./Controller/RequestHandlingController.php">
               <input type="hidden" name="type" value="login" />
               <h2>Sign In</h2>
               <?php echo"$message"?>
@@ -43,7 +42,7 @@ else {
                 class="g-recaptcha"
                 data-sitekey="6Lf1ObQpAAAAANQU4tUwFAmWgBS51GfU4y0pqFAO"
               ></div>
-              <input type="submit" name="submit_btn" value="Login In" />
+              <input type="submit" value="Login">
               <p class="signup">
                 Forgot Password
                 <a href="View/ResetPass.php">Reset with Email</a>
@@ -57,5 +56,6 @@ else {
         </div>
       </div>
     </section>
+    <script src="Assets/js/script.js"></script>
   </body>
 </html>

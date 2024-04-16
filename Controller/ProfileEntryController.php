@@ -4,7 +4,7 @@ require_once "../Helper/SessionHelper.php"; // Session handling helper
 require_once '../Model/UserModel.php'; // User model containing database operations
 
 // ProfileEntryController class definition
-class ProfileEntryController
+class ProfileEntryController extends  BaseController
 {
     private $userModel; // UserModel object for interacting with the user data
 
@@ -16,6 +16,8 @@ class ProfileEntryController
 
     /**
      * Handles the profile entry process
+     *
+     * @return void
      */
     public function profileEntry(): void
     {
@@ -69,19 +71,17 @@ class ProfileEntryController
             header("location: ../View/ProfileDetails.php");
             exit;
         } else {
-            var_dump($user); // Outputting user data for debugging if insertion fails
+            $this->logger("updating user details in db failed for user ".$_SESSION['email']." is failed");
         }
     }
-}
 
-/** 
- * Receives request from client and performs according to the request
- * Initiates ProfileEntryController object and handles profile entry process if POST request is received
- */
-
-$init = new ProfileEntryController(); // Creating ProfileEntryController object
-
-// Handling POST request for profile entry
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $init->profileEntry(); // Calling profileEntry method
+        /**
+     * Error logger
+     * 
+     * @param string $log
+     * @return void
+     */
+    public function logger(string $log):void {
+        error_log($log);
+    }
 }

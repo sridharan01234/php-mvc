@@ -238,15 +238,42 @@ class UserModel
 
     }
 
-    function updateEmailConfirmation($token)  
+    function resetPassword(string $password, string $email) : bool {
+        $this->db->query('UPDATE user SET user_password = :password WHERE email = :email');
+        // Binding parameters
+        $this->db->bind(':password', $password);
+        $this->db->bind(':email', $email);
+
+        // Executing the query
+        if ($this->db->execute()) {
+            return true; // Returning true if modification is successful
+        } else {
+            return false; // Returning false if modification fails
+        }
+    }
+
+    function updateOtp(string $otp,string $email) : bool {
+        $this->db->query('UPDATE user SET otp = :otp WHERE email = :email');
+        // Binding parameters
+        $this->db->bind(':otp', $otp);
+        $this->db->bind(':email', $email);
+
+        // Executing the query
+        if ($this->db->execute()) {
+            return true; // Returning true if modification is successful
+        } else {
+            return false; // Returning false if modification fails
+        }
+    }
+    public function updateEmailConfirmation(string $token):void
     {
         $this->db->query('SELECT * FROM token WHERE auth_token = :token');
         $this->db->bind(':token', $token);
         $row = $this->db->single();
         $email = $row->email;
         $this->db->query('UPDATE user SET email_confirmation =:verfied WHERE email =:email');
-        $this->db->bind(':verfied','verfied');
-        $this->db->bind(':email',$email);
+        $this->db->bind(':verfied', 'verfied');
+        $this->db->bind(':email', $email);
         $this->db->execute();
     }
 }

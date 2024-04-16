@@ -2,20 +2,17 @@
 // Importing required classes
 use PHPMailer\PHPMailer\PHPMailer;
 
-// Autoload required files
-require '../vendor/autoload.php';
-
 // Including necessary files
+require '../vendor/autoload.php'; // Autoload required files
 require_once "../Helper/SessionHelper.php"; // Session handling helper
 require_once '../Model/UserModel.php'; // User model containing database operations
 
 /**
  * PasswordResetController class handles the password reset functionality.
  */
-class PasswordResetController
+class PasswordResetController extends BaseController
 {
     private $passwordModel; // UserModel object for interacting with user data
-    private $message; // Variable to store message
 
     /**
      * Constructor to initialize PasswordResetController object.
@@ -24,9 +21,11 @@ class PasswordResetController
     {
         $this->passwordModel = new UserModel(); // Creating UserModel object
     }
-    
+
     /**
      * Sends OTP for password reset.
+     *
+     * @return void
      */
     public function sendOtp(): void
     {
@@ -54,17 +53,18 @@ class PasswordResetController
 
             // Sending email
             if (!$mail->Send()) {
-                echo "Mail Not sent"; // Error message if email sending fails
+                $this->logger("Email not send for reseting password for user :".$_POST['email']);
             } else {
                 // Setting session variables and updating OTP status
+                $_SESSION['Otp'] = $message;
                 $_SESSION['email'] = $_POST['email'];
-                $_SESSION['OTP'] = "sent";
-                $this->passwordModel->updateOtpStatus($_SESSION['email']);
+                $this->passwordModel->updateOtp($message, $_POST['email']);
                 // Redirecting to enter OTP page
                 header('location: ../View/EnterOpt.php');
                 exit;
             }
         } else {
+            $this->logger("Invalid Email for reseting password :".$_SESSION['email']." is Entered");
             $message = "Email not Registered"; // Error message if user not found
             header("location: ../index.php?$message"); // Redirecting to index page with error message
             exit;
@@ -73,29 +73,27 @@ class PasswordResetController
 
     /**
      * Verifies entered OTP.
+     *
+     * @return void
      */
     public function verifyOtp(): void
     {
         // Checking if OTP is expired
-        if($this->passwordModel->checkExpiry()) {
-            // Verifying entered OTP
-            if ($_POST['Otp'] == $_SESSION['Otp']) {
-                header("location: ../View/NewPassword.php"); // Redirecting to new password page
-                exit;
-            } else {
-                unset($_SESSION); // Unsetting session variables
-                echo "Incorrect Otp"; // Error message for incorrect OTP
-            }
-        }
-        else {
-            $message = ""; // Initializing message variable
-            header("location: ../ResetPass.php?$message=>'Your Otp is Expired Please Send Again'"); // Redirecting with expired OTP message
+        // Verifying entered OTP
+        if ($_POST['Otp'] == $_SESSION['Otp']) {
+            header("location: ../View/NewPassword.php"); // Redirecting to new password page
             exit;
+        } else {
+            unset($_SESSION); // Unsetting session variables
+            echo "Incorrect Otp"; // Error message for incorrect OTP
+            $this->logger("user ".$_SESSION['email']." Entered an invalid Otp");
         }
     }
 
     /**
      * Sets new password.
+     *
+     * @return void
      */
     public function newPassword(): void
     {
@@ -107,28 +105,19 @@ class PasswordResetController
             header("location: ../index.php"); // Redirecting to index page
             exit;
         }
+        else {
+            $this->logger("user ".$_SESSION['email']." Password is changed");
+        }
     }
-}
 
-/** 
- * Receives request from client and performs according to the request.
- */
-$init = new PasswordResetController(); // Creating PasswordResetController object
-
-// Handling request based on request type
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    switch ($_POST['type']) {
-        case 'SendOtp':
-            $init->sendOtp(); // Sending OTP
-            break;
-        case 'checkOtp':
-            $init->verifyOtp(); // Verifying OTP
-            break;
-        case 'ResetPassword':
-            $init->newPassword(); // Setting new password
-            break;
-        default:
-            header("location: ../index.php"); // Redirecting to index page for invalid request
-            exit;
+    /**
+     * Error logger
+     * 
+     * @param string $log
+     * @return void
+     */
+    public function logger(string $log): void
+    {
+        error_log($log);   
     }
 }

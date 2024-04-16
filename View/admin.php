@@ -41,14 +41,12 @@ if ($_SESSION['role'] === "user") {
                   <?php foreach ($_SESSION['details'] as $email): ?>
                   <?php if (!isset($email['email'])): { echo "No users found";break;}?>
                   <?php endif?>
-                  <?php $email['status'] == '1' ? $email['status'] = "Active" : $email['status'] = "inactive"?>                  <tbody>
+                  <?php $email['status'] == '1' ? $email['status'] = "Active" : $email['status'] = "inactive"?>
+                  <tbody>
                     <tr>
                       <td>
-                        <img
-                          class="rounded-circle shadow-4-strong"
-                          src="<?php echo "../assets/".$email['profile_picture'] ?>"
-                          alt="<?php echo $email['profile_picture'] ?>"
-                        />
+                        <img class="rounded-circle shadow-4-strong" src="<?php echo "../Assets/ProfilePictures/".$email['profile_picture'] ?>"
+                        alt="<?php echo $email['profile_picture'] ?>" />
                         <a href="#" class="user-link"></a>
                         <span class="user-subhead"
                           ><?php echo $email['user_name'] ?></span
@@ -64,7 +62,10 @@ if ($_SESSION['role'] === "user") {
                         <?php echo $email['email'] ?>
                       </td>
                       <td style="width: 20%">
-                        <form action="../Controller/AdminController.php" method="post">
+                        <form
+                          action="../Controller/RequestHandlingController.php"
+                          method="post"
+                        >
                           <input type="hidden" name="type" value="modify" />
                           <input
                             type="hidden"
@@ -93,7 +94,10 @@ if ($_SESSION['role'] === "user") {
                             </span>
                           </button>
                         </form>
-                        <form action="../Controller/AdminController.php" method="post">
+                        <form
+                          action="../Controller/RequestHandlingController.php"
+                          method="post"
+                        >
                           <input type="hidden" name="type" value="delete" />
                           <input
                             type="hidden"
@@ -131,7 +135,7 @@ if ($_SESSION['role'] === "user") {
     <div class="container">
       <div class="row">
         <div class="col-auto">
-          <form action="../Controller/AdminController.php" method="post">
+          <form action="../Controller/RequestHandlingController.php" method="post">
             <input type="hidden" name="type" value="print" />
             <button type="submit">List Users</button>
           </form>

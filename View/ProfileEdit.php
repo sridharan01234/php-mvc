@@ -18,7 +18,7 @@ if (!isset($_SESSION['full_name'])) {
   <body>
     <form
       method="post"
-      action="../Controller/ProfileEntryController.php"
+      action="../Controller/RequestHandlingController.php"
       enctype="multipart/form-data"
     >
       <div class="container">
@@ -33,7 +33,7 @@ if (!isset($_SESSION['full_name'])) {
                     <div class="avatar-wrapper">
                       <img
                         class="image"
-                        src="<?php echo $_SESSION['profile_path'] ?>"
+                        src="<?php echo "../Assets/ProfilePictures/".$_SESSION['profile_path'] ?>"
                       />
                       <div class="upload-button">
                         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
@@ -60,7 +60,7 @@ if (!isset($_SESSION['full_name'])) {
                 <div class="row mt-2">
                   <div class="col-md-12">
                     <label class="labels">Profile Picture</label>
-                    <input type="hidden" name="username" value="" />
+                    <input type="hidden" name="type" value="profileEntry" />
                     <input
                       type="file"
                       name="profile_picture"
@@ -189,8 +189,8 @@ if (!isset($_SESSION['full_name'])) {
                   <div class="row">
                     <div class="col-sm-3"></div>
                     <div class="col-sm-9 text-secondary">
-                      <button type="submit">Save Profile</button>
-                      <a href="ProfileDetails.php"><button>Discard</button></a>
+                      <input type="submit" value="Save">
+                      <a href="ProfileDetails.php">Discard</a>
                     </div>
                   </div>
                 </div>

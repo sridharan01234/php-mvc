@@ -6,12 +6,14 @@ require_once '../Model/UserModel.php'; // Including user model for database oper
 /**
  * AdminController class handles the administrative tasks such as deleting, modifying, and printing user details.
  */
-class AdminController
+class AdminController extends BaseController
 {
     private $adminModel; // UserModel object for interacting with user data
 
     /**
      * Constructor to initialize AdminController object.
+     * 
+     * @return void
      */
     public function __construct()
     {
@@ -20,6 +22,8 @@ class AdminController
 
     /**
      * Deletes a user based on the provided email.
+     *
+     * @return void
      */
     public function delete(): void
     {
@@ -30,6 +34,8 @@ class AdminController
 
     /**
      * Modifies the status of a user (active or inactive) based on the provided email.
+     *
+     * @return void
      */
     public function modify(): void
     {
@@ -38,7 +44,9 @@ class AdminController
         if ($_POST['status'] == 'inactive') {
             $status = '1';
         }
-
+        else {
+            $this->logger("user ". $_POST["email"] ."Logged in");
+        }
         // Modifying user status
         $this->adminModel->modify($_POST['email'], $status);
         $this->print(); // Redirecting to print method to display updated user list
@@ -46,6 +54,8 @@ class AdminController
 
     /**
      * Retrieves and prints all user details.
+     *
+     * @return void
      */
     public function print(): void
     {
@@ -59,28 +69,14 @@ class AdminController
         header('location: ../View/admin.php');
         exit;
     }
-}
 
-/** 
- * Receives request from client and performs according to the request
-*/
-
-$init = new AdminController(); // Creating AdminController object
-
-// Handling request based on request type
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    switch ($_POST['type']) {
-        case 'delete':
-            $init->delete(); // Deleting user
-            break;
-        case 'modify':
-            $init->modify(); // Modifying user
-            break;
-        case 'print':
-            $init->print(); // Printing user details
-            break;
-        default:
-            header("location: ../index.php"); // Redirecting to index page for invalid request
-            exit;
+        /**
+     * Error logger
+     * 
+     * @param string $log
+     * @return void
+     */
+    public function logger(string $log):void {
+        error_log($log);
     }
 }
