@@ -2,7 +2,7 @@
 // Including necessary files
 require_once "../Helper/SessionHelper.php"; // Including session handling helper
 require_once '../Model/UserModel.php'; // Including user model for database operations
-
+require "BaseController.php";
 /**
  * AdminController class handles the administrative tasks such as deleting, modifying, and printing user details.
  */

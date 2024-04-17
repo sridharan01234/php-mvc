@@ -4,6 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
 require '../vendor/autoload.php';
+require "../Interfaces/UserInterface.php";
 
 /**
  * Controller class for managing user-related operations.
