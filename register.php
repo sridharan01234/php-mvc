@@ -82,7 +82,7 @@
         </div>
       </div>
     </section>
-    <script src="Assets/js/script.js"></script>
+    <script src="Assets/js/register.js"></script>
   </body>
 </html>
 
