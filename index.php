@@ -29,20 +29,19 @@ else {
   <body>
     <section>
       <div class="container">
-        <button type="submit" name="submit_btn">Submit</button>
         <div class="user signinBx">
           <div class="formBx">
-            <form name = "loginForm" onsubmit="return validateForm()" method="post" action="./Controller/RequestHandlingController.php">
+            <form name="loginForm" onsubmit="return validateLoginForm()" method="post" action="./Controller/RequestHandlingController.php">
               <input type="hidden" name="type" value="login" />
               <h2>Sign In</h2>
               <?php echo"$message"?>
-              <input type="text" name="email" placeholder="E-mail"/>
-              <input type="password" name="user_pass" placeholder="Password"/>
+              <input type="text" id = "loginEmail" name="email" placeholder="E-mail"/>
+              <input type="password" id = "loginPassword" name="user_pass" placeholder="Password"/>
               <div
                 class="g-recaptcha"
                 data-sitekey="6Lf1ObQpAAAAANQU4tUwFAmWgBS51GfU4y0pqFAO"
               ></div>
-              <input type="submit" value="Login">
+              <input type="submit" value="Click Here">
               <p class="signup">
                 Forgot Password
                 <a href="View/ResetPass.php">Reset with Email</a>
@@ -56,6 +55,6 @@ else {
         </div>
       </div>
     </section>
-    <script src="Assets/js/script.js"></script>
+    <script src="./Assets/js/login.js"></script>
   </body>
 </html>
