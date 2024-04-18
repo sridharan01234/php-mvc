@@ -20,6 +20,8 @@ if (!isset($_SESSION['Otp'])) {
   <body>
     <div class="container">
       <form
+        name = "PasswordReset"
+        onclick="return newPasswordValidation()"
         action="../Controller/RequestHandlingController.php"
         method="post"
         class="col-lg-6 offset-lg-3"
@@ -56,5 +58,6 @@ if (!isset($_SESSION['Otp'])) {
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script src="../Assets/js/script.js"></script>
   </body>
 </html>
