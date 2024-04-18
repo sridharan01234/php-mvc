@@ -10,7 +10,6 @@ require "../Interfaces/UserInterface.php";
  * Controller class for managing user-related operations.
  */
 class UserController extends BaseController implements UserInterface
-
 {
     private $userModel;
 
@@ -21,6 +20,7 @@ class UserController extends BaseController implements UserInterface
     {
         $this->userModel = new UserModel;
     }
+    
     /**
      * Handles user registration process.
      *
@@ -83,6 +83,12 @@ class UserController extends BaseController implements UserInterface
      */
     public function login(): void
     {
+        try {
+            $this->log("Hiii from log function");
+        } catch (Exception $e) {
+            $this->logger($e->getMessage());
+        }
+
         if ($_POST['email'] == "") {
             $message = "Please Enter Your Email Address";
             header("location: ../index.php?$message");
@@ -114,7 +120,7 @@ class UserController extends BaseController implements UserInterface
                         exit;
                     } else {
                         if ($loggedInUser->status == 0) {
-                            $this->logger($_POST['email']." blocked user tried to log in");
+                            $this->logger($_POST['email'] . " blocked user tried to log in");
                             $message = "You are blocked. Please contact your administrator.";
                             header("location: ../index.php?$message");
                             exit;
@@ -126,13 +132,13 @@ class UserController extends BaseController implements UserInterface
                 }
 
             } else {
-                $this->logger($_POST["email"]." entered a incorrect password");
+                $this->logger($_POST["email"] . " entered a incorrect password");
                 $message = "Incorrect Password";
                 header("location: ../index.php?$message");
                 exit;
             }
         } else {
-            $this->logger($_POST['email']." is not registered is tried to log in ");
+            $this->logger($_POST['email'] . " is not registered is tried to log in ");
             $message = "Email is not registered";
             header("location: ../index.php?$message");
             exit;
@@ -219,18 +225,16 @@ class UserController extends BaseController implements UserInterface
             $mail->Subject = "Email Confirm";
             $mail->Body = "<a href='$message'>Click Here</a> to Confirm you Registration  <br> <b>This valid Only for 60Minutes</b>";
             $mail->AddAddress($email, "");
-    
+
             $headers = "From: Sender\n";
             $headers .= 'Content-Type:text/calendar; Content-Disposition: inline; charset=utf-8;\r\n';
             $headers .= "Content-Type: text/plain;charset=\"utf-8\"\r\n";
-            if($mail->Send()) 
-            {
+            if ($mail->Send()) {
                 return true;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $this->logger($e->getMessage());
-          }
+        }
     }
 
     /**
@@ -245,9 +249,9 @@ class UserController extends BaseController implements UserInterface
             $message = "Registration Link Sent Successfull open you mail to Confirm";
             header("location: ../index.php?$message");
             exit;
-        }
-        else {
-            $this->logger("Registration link send failed for user :".$email);
+        } else {
+            $this->logger("Registration link send failed for user :" . $email);
         }
     }
+
 }
