@@ -73,6 +73,7 @@
   </div>
 </footer>
 
-<script src="../js/script.js"></script>
+<script src="../Assets/
+js/script.js"></script>
 </body>
 </html>

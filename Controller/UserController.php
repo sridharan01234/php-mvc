@@ -1,97 +1,179 @@
 <?php
-require_once "../SessionHelper/SessionHelper.php";
+use PHPMailer\PHPMailer\PHPMailer;
+
+require_once "../Helper/SessionHelper.php";
 require_once '../Model/UserModel.php';
+require '../vendor/autoload.php';
+require "../Interfaces/UserInterface.php";
 
-class UserController
+/**
+ * Controller class for managing user-related operations.
+ */
+class UserController extends BaseController implements UserInterface
 {
-
     private $userModel;
+
+    /**
+     * Constructor to initialize UserModel instance.
+     */
     public function __construct()
     {
         $this->userModel = new UserModel;
     }
-
-    public function register()
+    
+    /**
+     * Handles user registration process.
+     *
+     * @return void
+     */
+    public function register(): void
     {
+        // Extract data from POST request
         $data = [
-            'usersName' => $_POST['usersName'],
+            'user_name' => $_POST['user_name'],
             'email' => $_POST['email'],
-            'usersUid' => $_POST['usersUid'],
-            'usersPwd' => $_POST['usersPwd'],
+            'user_pass' => $_POST['user_pass'],
             'role' => 'user',
             'status' => 1,
         ];
 
+        // Check if email already exists
         if ($this->userModel->findUserByEmail($data['email'])) {
-            header("location: ../index.php");
+            $message = "Email already exists";
+            header("location: ../index.php?$message");
             exit;
         }
 
-        $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
+        // Hash the password
+        $data['user_pass'] = password_hash($data['user_pass'], PASSWORD_DEFAULT);
 
-        if ($this->userModel->register($data)) {
-            header("location: ../View/");
+        // Send registration link
+        if ($this->registrationLink($data['email'])) {
+            if ($this->userModel->register($data)) {
+                header("location: ../View/");
+                exit;
+            }
+        }
+    }
+
+    /**
+     * Verifies Google reCAPTCHA.
+     *
+     * @return void
+     */
+    public function captchaVerify(): void
+    {
+        $recaptcha = $_POST['g-recaptcha-response'];
+        $secret_key = '6Lf1ObQpAAAAAMhWS2MXfHq44PxEhOQn9xlbxGOp';
+        $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha;
+        $response = file_get_contents($url);
+        $response = json_decode($response);
+
+        if ($response->success == false) {
+            $message = "Please complete captcha";
+            header("location: ../index.php?$message");
             exit;
         }
     }
 
-    public function login()
+    /**
+     * Handles user login process.
+     *
+     * @return void
+     */
+    public function login(): void
     {
-        $data = [
-            'name/email' => $_POST['name/email'],
-            'usersPwd' => $_POST['usersPwd'],
-        ];
-
-        if (empty($data['name/email']) || empty($data['usersPwd'])) {
-            header("location: ../index.php");
-            exit();
+        try {
+            $this->log("Hiii from log function");
+        } catch (Exception $e) {
+            $this->logger($e->getMessage());
         }
 
-        if ($this->userModel->findUserByEmail($data['name/email'])) {
-            $loggedInUser = $this->userModel->login($data['name/email'], $data['usersPwd']);
-            if ($loggedInUser) {
+        if ($_POST['email'] == "") {
+            $message = "Please Enter Your Email Address";
+            header("location: ../index.php?$message");
+            exit;
+        }
+        if ($_POST['user_pass'] == "") {
+            print_r($_POST['user_pass']);
+            $message = "Please Enter Your Password";
+            header("location: ../index.php?$message");
+            exit;
+        }
+        $this->captchaVerify();
+        $data = [
+            'email' => $_POST['email'],
+            'user_pass' => $_POST['user_pass'],
+        ];
 
-                if ($loggedInUser->role == 'admin') {
-                    $_SESSION['details'] = [];
-                    $this->createUserSession($loggedInUser);
-                    header("location: ../View/admin.php");
+        if ($this->userModel->findUserByEmail($data['email'])) {
+            $loggedInUser = $this->userModel->login($data['email'], $data['user_pass']);
+            if ($loggedInUser) {
+                if ($loggedInUser->email_confirmation == 'Not Verfied' || $loggedInUser->email_confirmation == '') {
+                    header('location: ../View/EmailVerification.php');
                     exit;
                 } else {
-                    if ($loggedInUser->status == 0) { 
-                        echo"You are blocked please Contact you Administrator";
+                    if ($loggedInUser->role == 'admin') {
+                        $_SESSION['details'] = [];
+                        $this->createUserSession($loggedInUser);
+                        header("location: ../View/admin.php");
+                        exit;
+                    } else {
+                        if ($loggedInUser->status == 0) {
+                            $this->logger($_POST['email'] . " blocked user tried to log in");
+                            $message = "You are blocked. Please contact your administrator.";
+                            header("location: ../index.php?$message");
+                            exit;
+                        }
+                        $this->createUserSession($loggedInUser);
+                        header("location: ../View/admin.php");
                         exit;
                     }
-                    $this->createUserSession($loggedInUser);
-                    header("location: ../View/");
-                    exit;
                 }
+
             } else {
-                header("location: ../index.php");
+                $this->logger($_POST["email"] . " entered a incorrect password");
+                $message = "Incorrect Password";
+                header("location: ../index.php?$message");
                 exit;
             }
         } else {
-            header("location: ../index.php");
+            $this->logger($_POST['email'] . " is not registered is tried to log in ");
+            $message = "Email is not registered";
+            header("location: ../index.php?$message");
             exit;
         }
     }
 
-    public function home()
+    /**
+     * Redirects user to home page.
+     *
+     * @return void
+     */
+    public function home(): void
     {
         header("location: ../View/");
         exit;
     }
 
-    public function createUserSession($user)
+    /**
+     * Creates session for logged-in user.
+     *
+     * @param object $user user object
+     *
+     * @return void
+     */
+    public function createUserSession(object $user): void
     {
+        $_SESSION['user_name'] = $user->user_name;
         $_SESSION['role'] = $user->role;
-        $_SESSION['usersId'] = $user->usersUid;
         $_SESSION['email'] = $user->email;
-        if($user->profile_picture== null) {
-            $_SESSION['profile_path'] = "../assets/default.jpg"; 
+        if ($user->profile_picture == null) {
+            $_SESSION['profile_path'] = "default.png";
+        } else {
+            $_SESSION['profile_path'] = $user->profile_picture;
         }
-        else {
-            $_SESSION['profile_path'] = "../assets/". $user->profile_picture;
-        }
+        $_SESSION['email_confirmation'] = $user->email_confirmation;
         $_SESSION['address_line1'] = $user->address_line1;
         $_SESSION['mobile_number'] = $user->mobile_number;
         $_SESSION['postcode'] = $user->postcode;
@@ -103,41 +185,73 @@ class UserController
         $_SESSION['education'] = $user->education;
     }
 
-    public function logout()
+    /**
+     * Logs out user.
+     *
+     * @return void
+     */
+    public function logout(): void
     {
-        unset($_SESSION['usersId']);
-        unset($_SESSION['usersName']);
+        unset($_SESSION['user_name']);
         unset($_SESSION['email']);
         session_destroy();
-        header("location: ../index.php");
+        header("location: ../");
         exit;
     }
-}
 
-$init = new UserController();
+    /**
+     * Sends registration confirmation link to user's email.
+     *
+     * @return void
+     * @param string $email
+     */
+    public function registrationLink(string $email): bool
+    {
+        try {
+            $message = md5(uniqid() . rand(1000000, 9999999));
+            $this->userModel->storeToken($message, $email);
+            $message = 'http://localhost/php-mvc/Controller/BaseController.php?token=' . $message;
+            $mail = new PHPMailer(true);
+            $mail->IsSMTP();
+            $mail->SMTPDebug = 0;
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = 'tls';
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->IsHTML(true);
+            $mail->Username = "sridharan01234@gmail.com";
+            $mail->Password = "lhvlpsjsnlszulfz";
+            $mail->SetFrom("sridharan01234@gmail.com", "Sridharan");
+            $mail->Subject = "Email Confirm";
+            $mail->Body = "<a href='$message'>Click Here</a> to Confirm you Registration  <br> <b>This valid Only for 60Minutes</b>";
+            $mail->AddAddress($email, "");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    switch ($_POST['type']) {
-        case 'register':
-            $init->register();
-            break;
-        case 'login':
-            $init->login();
-            break;
-        default:
-            header("location: ../index.php");
-            exit;
+            $headers = "From: Sender\n";
+            $headers .= 'Content-Type:text/calendar; Content-Disposition: inline; charset=utf-8;\r\n';
+            $headers .= "Content-Type: text/plain;charset=\"utf-8\"\r\n";
+            if ($mail->Send()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            $this->logger($e->getMessage());
+        }
     }
 
-} else {
-    switch ($_GET['q']) {
-        case 'logout':
-            $init->logout();
-            break;
-        case 'home':
-            $init->home();
-        default:
-            header("location: ../index.php");
+    /**
+     * for users without email confirmation to send confirm link
+     *
+     * @return void
+     * @param string $email
+     */
+    public function emailConfirmation(string $email): void
+    {
+        if ($this->registrationLink($email)) {
+            $message = "Registration Link Sent Successfull open you mail to Confirm";
+            header("location: ../index.php?$message");
             exit;
+        } else {
+            $this->logger("Registration link send failed for user :" . $email);
+        }
     }
+
 }

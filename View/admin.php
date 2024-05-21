@@ -1,4 +1,4 @@
-<?php require_once "../SessionHelper/SessionHelper.php";
+<?php require_once "../Helper/SessionHelper.php";
 require_once "../Controller/AdminController.php";
 
 if ($_SESSION['role'] === "user") {
@@ -13,17 +13,12 @@ if ($_SESSION['role'] === "user") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-    />
-    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../style/admin.css" />
+    <link rel="stylesheet" href="../Assets/style/admin.css" />
   </head>
   <body>
     <hr />
@@ -46,17 +41,15 @@ if ($_SESSION['role'] === "user") {
                   <?php foreach ($_SESSION['details'] as $email): ?>
                   <?php if (!isset($email['email'])): { echo "No users found";break;}?>
                   <?php endif?>
-                  <?php $email['status'] == '1' ? $email['status'] = "Active" : $email['status'] = "inactive"?>                  <tbody>
+                  <?php $email['status'] == '1' ? $email['status'] = "Active" : $email['status'] = "inactive"?>
+                  <tbody>
                     <tr>
                       <td>
-                        <img
-                          class="rounded-circle shadow-4-strong"
-                          src="<?php echo "../assets/".$email['profile_picture'] ?>"
-                          alt="<?php echo $email['profile_picture'] ?>"
-                        />
+                        <img class="rounded-circle shadow-4-strong" src="<?php echo "../Assets/ProfilePictures/".$email['profile_picture'] ?>"
+                        alt="<?php echo $email['profile_picture'] ?>" />
                         <a href="#" class="user-link"></a>
                         <span class="user-subhead"
-                          ><?php echo $email['usersName'] ?></span
+                          ><?php echo $email['user_name'] ?></span
                         >
                       </td>
                       <td><?php echo $email['created_at'] ?></td>
@@ -69,7 +62,10 @@ if ($_SESSION['role'] === "user") {
                         <?php echo $email['email'] ?>
                       </td>
                       <td style="width: 20%">
-                        <form action="../Controller/AdminController.php" method="post">
+                        <form
+                          action="../Controller/RequestHandlingController.php"
+                          method="post"
+                        >
                           <input type="hidden" name="type" value="modify" />
                           <input
                             type="hidden"
@@ -98,7 +94,10 @@ if ($_SESSION['role'] === "user") {
                             </span>
                           </button>
                         </form>
-                        <form action="../Controller/AdminController.php" method="post">
+                        <form
+                          action="../Controller/RequestHandlingController.php"
+                          method="post"
+                        >
                           <input type="hidden" name="type" value="delete" />
                           <input
                             type="hidden"
@@ -136,7 +135,7 @@ if ($_SESSION['role'] === "user") {
     <div class="container">
       <div class="row">
         <div class="col-auto">
-          <form action="../Controller/AdminController.php" method="post">
+          <form action="../Controller/RequestHandlingController.php" method="post">
             <input type="hidden" name="type" value="print" />
             <button type="submit">List Users</button>
           </form>
@@ -151,6 +150,6 @@ if ($_SESSION['role'] === "user") {
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="../js/script.js"></script>
+    <script src="../Assets/js/script.js"></script>
   </body>
 </html>

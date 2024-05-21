@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="Assets/style/style.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -12,22 +13,20 @@
       <div class="container">
         <div class="user signinBx">
           <div class="formBx">
-            <form method="post" action="./Controller/UserController.php">
+            <form name = "signUpForm" onsubmit="return validateSignUpForm()"method="post" action="./Controller/RequestHandlingController.php">
               <input type="hidden" name="type" value="register" />
               <h2>Create an account</h2>
               <input
                 type="text"
                 id="fname"
-                name="usersName"
+                name="user_name"
                 placeholder="Enter your Fullname"
-                required
               />
               <input
                 type="text"
                 id="lname"
-                name="usersUid"
+                name="user_id"
                 placeholder="Enter Username"
-                required
               />
               <input
                 type="email"
@@ -38,14 +37,13 @@
               <p id="Valid-Email" class="glyphicon glyphicon-remove">
                 Invalid Email
               </p>
-              <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
               <div class="form-group has-feedback">
                 <input
                   class="form-control"
                   id="NewPassword"
                   placeholder="New Password"
                   type="password"
-                  required
+                  name="password"
                 />
                 <span
                   class="glyphicon glyphicon-lock form-control-feedback"
@@ -68,25 +66,25 @@
               <input
                 type="password"
                 id="ConfirmPassword"
-                name="usersPwd"
+                name="user_pass"
                 placeholder="Confirm Password"
               />
               <p id="Match" class="glyphicon glyphicon-remove">
                 Confirm Your Password
               </p>
-              <button type="submit" name="submit">Sign Up</button>
+              <input type="submit" value="Sign Up">
               <p class="signup">
                 Already have an account ?
                 <a href="index.php">Sign in.</a>
               </p>
             </form>
           </div>
-          <div class="imgBx">
-            <img src="assets/image.png" alt="Welcome Image" />
-          </div>
         </div>
       </div>
     </section>
-    <script src="js/script.js"></script>
+    <script src="Assets/js/register.js"></script>
   </body>
 </html>
+
+
+

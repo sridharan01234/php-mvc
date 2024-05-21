@@ -1,6 +1,6 @@
-<?php require_once "../SessionHelper/SessionHelper.php";
-if (!isset($_SESSION['usersId'])) {
-    header('location: ../index.php');
+<?php require_once "../Helper/SessionHelper.php";
+if (!isset($_SESSION['email'])) {
+  header('location: ../index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@ if (!isset($_SESSION['usersId'])) {
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="../style/style.min.css" />
+    <link rel="stylesheet" href="../Assets/style/style.min.css" />
   </head>
   <body>
     <div class="container">
@@ -25,15 +25,15 @@ if (!isset($_SESSION['usersId'])) {
                 <div class="d-flex flex-column align-items-center text-center">
                   <div class="avatar-wrapper">
                       <img
-                        class="profile-pic"
-                        src="<?php echo $_SESSION['profile_path'] ?>"
+                        class="image"
+                        src="<?php echo "../Assets/ProfilePictures/".$_SESSION['profile_path'] ?>"
                       />
                       <div class="upload-button">
                         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                       </div>
                     </div>
                   <div class="mt-3">
-                    <h4><?php echo $_SESSION['usersId'] ?></h4>
+                    <h4><?php echo $_SESSION['full_name'] ?></h4>
                     <p class="text-secondary mb-1">Impact Trainee</p>
                     <p class="text-muted font-size-sm">
                       <?php echo $_SESSION['address_line1'] ?>
